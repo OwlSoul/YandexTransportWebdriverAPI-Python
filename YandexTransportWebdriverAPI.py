@@ -4,7 +4,9 @@
 
 import socket
 import json
-
+import time
+import threading
+from Logger import Logger
 
 class YandexTransportProxy:
     def __init__(self, host, port):
@@ -13,7 +15,32 @@ class YandexTransportProxy:
 
         self.buffer_size = 4096
 
-    def _single_query_blocking(self, sock, command):
+        self.log = Logger(Logger.DEBUG)
+
+    class ListenerThread(threading.Thread):
+        def __init__(self, app, sock, command, callback):
+            super().__init__()
+            self.app = app
+            self.command = command
+            self.sock = sock
+            self.callback_function = callback
+
+        def run(self):
+            self.app._single_query_blocking(self.sock, self.command, self.callback_function)
+            self.app._disconnect(self.sock)
+
+    def callback_fun(self, data):
+        print("Callback!")
+        print(data)
+
+    def _single_query_blocking(self, sock, command, callback=None):
+        """
+        Execute single blocking query
+        :param sock: socket
+        :param command: command to execute
+        :param callback: if not None, will be called each time JSON arrives
+        :return: ???
+        """
         result = ''
 
         command = command + '\n'
@@ -27,6 +54,10 @@ class YandexTransportProxy:
                 if c == '\0':
                     json_data = json.loads(buffer)
                     buffer = ''
+                    # Executing callback if asked to
+                    if callback is not None:
+                        callback(json_data)
+                    # TODO: probably make these separate functions and remove from here
                     # Check if request was added to queue
                     if 'queue_posistion' in json_data:
                         if 'error' in json_data:
@@ -43,28 +74,50 @@ class YandexTransportProxy:
                 else:
                     buffer += c
 
+        self.log.debug("Processing complete for query: " + command)
         return result
 
-    def connect(self):
+    def _connect(self):
+        """
+        Connect to the server.
+        :return: connection socket, error message
+        """
+        self.log.debug("Connecting to server " + str(self.host) + ":" + str(self.port))
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((self.host, self.port))
-        return sock
+        error = "OK"
+        try:
+            sock.connect((self.host, self.port))
+        except socket.error as e:
+            self.log.error(" Socket error:" + str(e))
+            sock = None
+            error = str(e)
+        self.log.debug("Connected to server " + str(self.host) + ":" + str(self.port))
+        return sock, error
 
-    def disconnect(self):
-        pass
+    def _disconnect(self, sock):
+        """
+        Disconnect from the server
+        :param sock: socket
+        :return: none
+        """
+        if sock is not None:
+            self.log.debug("Disconnecting from the server " + str(self.host) + ":" + str(self.port))
+            sock.close()
+        else:
+            self.log.error("Socket is empty!")
 
-    def echo(self, text, block=True, callback=None):
+    def echo(self, text, blocking=True, callback=None):
         """
         Test command, will echo back the text. Note, the "echo" query is added to the Query Queue of the
         YandexTransportProxy server, and will be executed only then it is its turn.
         :param text: any string, for-example "Testing"
-        :param block: default true, will block until the final response will be received.
+        :param blocking: default true, will block until the final response will be received.
                       Note: this may take a while, several seconds and more.
         :param callback: Callback function to call when a new JSON is received.
                          Used if block is set to False.
         :return: text string, should be equal to text parameter.
         """
-        sock = self.connect()
+        sock, error = self._connect()
 
         if sock is None:
             raise Exception("Failed to connect to server,"
@@ -72,24 +125,34 @@ class YandexTransportProxy:
                             " post = "+str(self.port))
 
         command = "echo?" + text
-        result = self._single_query_blocking(sock, command)
-
-        self.disconnect()
+        self.log.debug("Executing query: " + command)
+        if blocking:
+            result = self._single_query_blocking(sock, command)
+            self.log.debug("Query execution complete!")
+            self._disconnect(sock)
+        else:
+            result = ""
+            listener_thread = self.ListenerThread(self, sock, command, callback)
+            listener_thread.start()
         return result
 
-    def getStopInfo(self, url, block=True, callback=None):
+    def getStopInfo(self, url, blocking=True, callback=None):
         pass
 
-    def getRouteInfo(self, url, block=True, callback=None):
+    def getRouteInfo(self, url, blocking=True, callback=None):
         pass
 
-    def getVehiclesInfo(self, url, block=True, callback=None):
+    def getVehiclesInfo(self, url, blocking=True, callback=None):
         pass
 
-    def getAllInfo(self, url, block=True, callback=None):
+    def getAllInfo(self, url, blocking=True, callback=None):
         pass
 
-print("Started")
-transport_proxy = YandexTransportProxy('127.0.0.1', 25555)
-result = transport_proxy.echo("msg=Hello!")
-print(json.dumps(result, sort_keys=True, indent=4, separators=(',', ': ')))
+if __name__ == '__main__':
+    print("Started")
+    transport_proxy = YandexTransportProxy('127.0.0.1', 25555)
+    result = transport_proxy.echo("msg=Hello!", blocking=False, callback=transport_proxy.callback_fun)
+    print("Async works!")
+    #print(json.dumps(result, sort_keys=True, indent=4, separators=(',', ': ')))
+    time.sleep(10)
+    print("Terminated!")

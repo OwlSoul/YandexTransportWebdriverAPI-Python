@@ -4,6 +4,9 @@ Logs messages are printed in the following format:
 
    LOG LEVEL : [ Timestamp ] : Message
 
+Log levels include NONE, ERROR, WARNING, INFO and DEBUG.
+No log messages above current verbose level will be printed.
+
 """
 # pylint: disable=C0103
 #  Disabling pylint snakeCase check for module name.
