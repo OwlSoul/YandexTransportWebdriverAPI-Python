@@ -38,8 +38,9 @@ class YandexTransportProxy:
         Execute single blocking query
         :param sock: socket
         :param command: command to execute
-        :param callback: if not None, will be called each time JSON arrives
-        :return: ???
+        :param callback: if not None, will function be called each time JSON arrives
+                         Function format: def callback(data)
+        :return: array of received data.
         """
         result = ''
 
@@ -74,7 +75,7 @@ class YandexTransportProxy:
                 else:
                     buffer += c
 
-        self.log.debug("Processing complete for query: " + command)
+        self.log.debug("Processing complete for query: " + command.strip())
         return result
 
     def _connect(self):
@@ -115,7 +116,8 @@ class YandexTransportProxy:
                       Note: this may take a while, several seconds and more.
         :param callback: Callback function to call when a new JSON is received.
                          Used if block is set to False.
-        :return: text string, should be equal to text parameter.
+        :return: blocking mode: text string, should be equal to text parameter.
+                 non-blocking mode: empty string
         """
         sock, error = self._connect()
 
@@ -127,13 +129,13 @@ class YandexTransportProxy:
         command = "echo?" + text
         self.log.debug("Executing query: " + command)
         if blocking:
+            # This might take a while, will block
             result = self._single_query_blocking(sock, command)
-            self.log.debug("Query execution complete!")
             self._disconnect(sock)
         else:
-            result = ""
-            listener_thread = self.ListenerThread(self, sock, command, callback)
-            listener_thread.start()
+            # This will return immideately, will not block
+            result = ''
+            self.ListenerThread(self, sock, command, callback).start()
         return result
 
     def getStopInfo(self, url, blocking=True, callback=None):
@@ -152,7 +154,7 @@ if __name__ == '__main__':
     print("Started")
     transport_proxy = YandexTransportProxy('127.0.0.1', 25555)
     result = transport_proxy.echo("msg=Hello!", blocking=False, callback=transport_proxy.callback_fun)
-    print("Async works!")
+    transport_proxy.log.info("Async works!")
     #print(json.dumps(result, sort_keys=True, indent=4, separators=(',', ': ')))
     time.sleep(10)
     print("Terminated!")
