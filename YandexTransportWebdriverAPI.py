@@ -9,6 +9,10 @@ from Logger import Logger
 
 __version__ = '2.0.0-alpha'
 
+def cond_exception(do_raise, exception_type, text):
+        if do_raise:
+            raise exception_type(text)
+
 class YandexTransportProxy:
 
     ERROR_OK = 0
@@ -303,42 +307,49 @@ class YandexTransportProxy:
     # like getting only the list of stops for a route, counting vehicles on the route,                                 #
     # counting how many stops a buss will need to pass till it arrives to desired stop,                                #
     # or just providing all information for Information Displays (bus number, bus route, time to wait).                #
+    # Practically all of them are static stateless methods, which accept getXXXInfo as input.                          #
     # -----------------------------------------------------------------------------------------------------------------#
 
-    def countVehiclesOnRoute(self, vehicles_info):
+    @staticmethod
+    def countVehiclesOnRoute(vehicles_info, raise_exception=False):
         """
         Count vehicles on the route.
         :param vehicles_info: data from getVehiclesInfo method
+        :param raise_exception: raise exception if error is encoutered
         :return:
         """
         if vehicles_info is None:
+            cond_exception(raise_exception, Exception, "No vehicles data provided!")
             return None
 
         result = 0
+
         if 'data' in vehicles_info:
             for entry in vehicles_info['data']:
                 if 'properties' in entry:
                     if 'VehicleMetaData' in entry['properties']:
                         if 'Transport' in entry['properties']['VehicleMetaData']:
                             result += 1
-
+                        else:
+                            cond_exception(raise_exception, Exception,
+                                           'Malformed JSON: no "Transport" field in "VehicleMetaData"')
+                    else:
+                        cond_exception(raise_exception, Exception,
+                                       'Malformed JSON: no "VehicleMetaData" field in "properties"')
+                else:
+                    cond_exception(raise_exception, Exception,
+                                   'Malformed JSON: no "properties" field in "data" entry.')
+        else:
+            cond_exception(raise_exception, Exception,
+                           'Malformed JSON: no "data" field present.')
         return result
 
 
 if __name__ == '__main__':
     print("Started")
     transport_proxy = YandexTransportProxy('127.0.0.1', 25555)
-    #result = transport_proxy.echo("msg=Hello!", blocking=False, callback=transport_proxy.callback_fun)
-    #result = transport_proxy.getEcho("Hello!", query_id='ALPHA', blocking=True)
-    #print(result)
-    url = "https://yandex.ru/maps/213/moscow/?ll=37.730525%2C55.723958&masstransit%5BrouteId%5D=213_63_trolleybus_mosgortrans&masstransit%5BstopId%5D=2048564130&masstransit%5BthreadId%5D=2036925978&mode=stop&z=11"
+    url = "https://yandex.ru/maps/213/moscow/?ll=37.561491%2C55.762169&masstransit%5BrouteId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
     vehicles_data = transport_proxy.getVehiclesInfo(url)
     count = transport_proxy.countVehiclesOnRoute(vehicles_data)
     print("Vehicles on route:", count)
-    #print(json.dumps(result, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
-
-
-    #transport_proxy.log.info("Async works!")
-    #print(json.dumps(result, sort_keys=True, indent=4, separators=(',', ': ')))
-    #time.sleep(10)
     print("Terminated!")
