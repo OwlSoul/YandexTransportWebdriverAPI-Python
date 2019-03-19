@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 
-# TODO: ID must be sent, not obtained from server.
-
 import socket
 import json
 import time
+import uuid
 import threading
 from Logger import Logger
 
+__version__ = '2.0.0-alpha'
+
 class YandexTransportProxy:
+
+    ERROR_OK = 0
+    ERROR_TIMEOUT = 1
+
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -17,21 +22,22 @@ class YandexTransportProxy:
 
         self.log = Logger(Logger.DEBUG)
 
+    def callback_fun_example(self, data):
+        self.log.info("Received data:" + str(data))
+
     class ListenerThread(threading.Thread):
-        def __init__(self, app, sock, command, callback):
+        def __init__(self, app, sock, query_id, command, callback):
             super().__init__()
             self.app = app
             self.command = command
+            self.query_id = query_id
             self.sock = sock
             self.callback_function = callback
 
         def run(self):
             self.app._single_query_blocking(self.sock, self.command, self.callback_function)
             self.app._disconnect(self.sock)
-
-    def callback_fun(self, data):
-        print("Callback!")
-        print(data)
+            self.app.log.debug("Listener thread for query with ID="+str(self.query_id) +" terminated.")
 
     def _single_query_blocking(self, sock, command, callback=None):
         """
@@ -40,16 +46,18 @@ class YandexTransportProxy:
         :param command: command to execute
         :param callback: if not None, will function be called each time JSON arrives
                          Function format: def callback(data)
-        :return: array of received data.
+        :return: array of dictionaries containing: method, received data
         """
-        result = ''
+        result = []
 
         command = command + '\n'
         sock.sendall(bytes(command, 'utf-8'))
         completed = False
         buffer = ''
         while not completed:
+            # Receive data from the server
             data = sock.recv(self.buffer_size)
+
             response = bytes(data).decode('utf-8')
             for c in response:
                 if c == '\0':
@@ -70,7 +78,7 @@ class YandexTransportProxy:
                             completed = True
 
                         if 'data' in json_data:
-                            result = json_data["data"]
+                            result.append({'method': json_data['method'], 'data':json_data["data"]})
 
                 else:
                     buffer += c
@@ -81,7 +89,7 @@ class YandexTransportProxy:
     def _connect(self):
         """
         Connect to the server.
-        :return: connection socket, error message
+        :return: connection socket
         """
         self.log.debug("Connecting to server " + str(self.host) + ":" + str(self.port))
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -107,54 +115,230 @@ class YandexTransportProxy:
         else:
             self.log.error("Socket is empty!")
 
-    def echo(self, text, blocking=True, callback=None):
+    def _executeGetQuery(self, command, payload, query_id=None,
+                         blocking=True, timeout=0,
+                         callback=None):
         """
-        Test command, will echo back the text. Note, the "echo" query is added to the Query Queue of the
-        YandexTransportProxy server, and will be executed only then it is its turn.
-        :param text: any string, for-example "Testing"
-        :param blocking: default true, will block until the final response will be received.
-                      Note: this may take a while, several seconds and more.
-        :param callback: Callback function to call when a new JSON is received.
-                         Used if block is set to False.
-        :return: blocking mode: text string, should be equal to text parameter.
-                 non-blocking mode: empty string
+        Meta-command to implement getXXX requests.
+        :param command: string, command to implement, for example getStopInfo
+        :param payload: string, command payload, url of stop or route
+        :param query_id: string, query_id to be passed to the server, all responses to this query will return with this value
+        :param blocking: boolean, blocking or non-blocking
+        :param timeout: integer, connection timeout value, 0 to switch off
+        :param callback: callback function to be called each time response JSON arrives, for non-blocking scenario
+        :return: array of received data (strings containing JSON)
         """
         sock, error = self._connect()
 
         if sock is None:
             raise Exception("Failed to connect to server,"
-                            " host = "+str(self.host) + "," +
-                            " post = "+str(self.port))
+                            " host = " + str(self.host) + "," +
+                            " post = " + str(self.port))
 
-        command = "echo?" + text
+        # Generate UUID if it is not set
+        if query_id is None:
+            query_id = uuid.uuid4()
+
+        command = command + '?' + 'id=' + str(query_id) + '?' + payload
         self.log.debug("Executing query: " + command)
         if blocking:
             # This might take a while, will block
+            if timeout > 0:
+                sock.settimeout(timeout)
             result = self._single_query_blocking(sock, command)
             self._disconnect(sock)
         else:
             # This will return immideately, will not block
             result = ''
-            self.ListenerThread(self, sock, command, callback).start()
+            self.ListenerThread(self, sock, query_id, command, callback).start()
+
+        if blocking:
+            if len(result) > 0:
+                return result
+            else:
+                raise Exception("No data is received")
+        else:
+            return None
+
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # ----                                     SERVER CONTROL METHODS                                             ---- #
+    #                                                                                                                  #
+    # These are the methods to control and test Yandex Transport Proxy server behaviour.                               #
+    # ---------------------------------------------------------------------------------------------------------------- #
+
+    def getEcho(self, text, query_id=None, blocking=True, timeout=0, callback=None):
+        """
+        Test command, will echo back the text. Note, the "echo" query is added to the Query Queue of the
+        YandexTransportProxy server, and will be executed only then it is its turn.
+        :param query_id: string, ID of the query to send to the server, all responces to this query will
+                         contain this exact ID.
+                         Default is None, in this case it will be randomly generated,
+                         You can get it from the callback function by using data['id']
+                         if your callback function is like this: callback_fun(data)
+        :param text: string, anything you like for-example "Testing"
+        :param blocking: boolean, default is True, will block until the final response will be received.
+                      Note: this may take a while, several seconds and more.
+        :param timeout: integer, default is off, will raise a socket.timeout exception is no data is received
+                      during this period.
+                      Mind the server delay between processing queries, this value definitely should be bigger!
+                      If set to 0 - will wait indefinitely.
+        :param callback: Callback function to call when a new JSON is received.
+                         Used if block is set to False.
+        :return: for blocking mode: string, should be equal to text parameter.
+                 for non-blocking mode: empty string
+        """
+        result = self._executeGetQuery('getEcho', text, query_id, blocking, timeout, callback)
+        return result[-1]['data']
+
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # ----                                        CORE API METHODS                                                ---- #
+    #                                                                                                                  #
+    # These are the methods which implement access to identically named Yandex Transport API functions.                #
+    # Each one usually returns pretty huge amount of data in JSON format.                                              #
+    # ---------------------------------------------------------------------------------------------------------------- #
+
+    def getStopInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+        """
+        Request information about one mass transit stop from Yandex API.
+        :param query_id: string, ID of the query to send to the server, all responces to this query will
+                         contain this exact ID.
+                         Default is None, in this case it will be randomly generated,
+                         You can get it from the callback function by using data['id']
+                         if your callback function is like this: callback_fun(data)
+        :param url: Yandex Maps URL of the stop.
+        :param blocking: boolean, default is True, will block until the final response will be received.
+                      Note: this may take a while, several seconds and more.
+        :param timeout: integer, default is off, will raise a socket.timeout exception is no data is received
+                      during this period.
+                      Mind the server delay between processing queries, this value definitely should be bigger!
+                      If set to 0 - will wait indefinitely.
+        :param callback: Callback function to call when a new JSON is received.
+                         Used if block is set to False.
+        :return: for blocking mode: dictionary containing information about requested stop. Use
+                 json.dumps() function to get original Yandex API JSON.
+                 for non-blocking mode: empty string
+        """
+        result = self._executeGetQuery('getStopInfo', url, query_id, blocking, timeout, callback)
+        return result[-1]['data']
+
+    def getRouteInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+        """
+        Request information about one mass transit route from Yandex API.
+        :param query_id: string, ID of the query to send to the server, all responces to this query will
+                         contain this exact ID.
+                         Default is None, in this case it will be randomly generated,
+                         You can get it from the callback function by using data['id']
+                         if your callback function is like this: callback_fun(data)
+        :param url: Yandex Maps URL of the route.
+        :param blocking: boolean, default is True, will block until the final response will be received.
+                      Note: this may take a while, several seconds and more.
+        :param timeout: integer, default is off, will raise a socket.timeout exception is no data is received
+                      during this period.
+                      Mind the server delay between processing queries, this value definitely should be bigger!
+                      If set to 0 - will wait indefinitely.
+        :param callback: Callback function to call when a new JSON is received.
+                         Used if block is set to False.
+        :return: for blocking mode: dictionary containing information about requested route. Use
+                 json.dumps() function to get original Yandex API JSON.
+                 for non-blocking mode: empty string
+        """
+        result = self._executeGetQuery('getRouteInfo', url, query_id, blocking, timeout, callback)
+        return result[-1]['data']
+
+    def getVehiclesInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+        """
+        Request information about vehicles of one mass transit route from Yandex API.
+        :param query_id: string, ID of the query to send to the server, all responces to this query will
+                         contain this exact ID.
+                         Default is None, in this case it will be randomly generated,
+                         You can get it from the callback function by using data['id']
+                         if your callback function is like this: callback_fun(data)
+        :param url: Yandex Maps URL of the route.
+        :param blocking: boolean, default is True, will block until the final response will be received.
+                      Note: this may take a while, several seconds and more.
+        :param timeout: integer, default is off, will raise a socket.timeout exception is no data is received
+                      during this period.
+                      Mind the server delay between processing queries, this value definitely should be bigger!
+                      If set to 0 - will wait indefinitely.
+        :param callback: Callback function to call when a new JSON is received.
+                         Used if block is set to False.
+        :return: for blocking mode: dictionary containing information about vehicles of requested route. Use
+                 json.dumps() function to get original Yandex API JSON.
+                 for non-blocking mode: empty string
+        """
+        result = self._executeGetQuery('getVehiclesInfo', url, query_id, blocking, timeout, callback)
+        return result[-1]['data']
+
+    def getAllInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+        """
+        Wildcard method, will return ALL Yandex Masstransit API responses from given URL.
+        For example, "route" url will return getRouteInfo and getVehiclesInfo in sequence.
+        :param query_id: string, ID of the query to send to the server, all responces to this query will
+                         contain this exact ID.
+                         Default is None, in this case it will be randomly generated,
+                         You can get it from the callback function by using data['id']
+                         if your callback function is like this: callback_fun(data)
+        :param url: Yandex Maps URL of the route.
+        :param blocking: boolean, default is True, will block until the final response will be received.
+                      Note: this may take a while, several seconds and more.
+        :param timeout: integer, default is off, will raise a socket.timeout exception is no data is received
+                      during this period.
+                      Mind the server delay between processing queries, this value definitely should be bigger!
+                      If set to 0 - will wait indefinitely.
+        :param callback: Callback function to call when a new JSON is received.
+                         Used if block is set to False.
+        :return: for blocking mode: array of dictionaries in the following format:
+                                    {'method': method, 'data': data}
+                                    where method - the API method called (getStopInfo, getRouteInfo, getVehiclesInfo)
+                                          data   - another dictionary containing all data for given method.
+                 for non-blocking mode: empty string
+                """
+        result = self._executeGetQuery('getAllInfo', url, query_id, blocking, timeout, callback)
         return result
 
-    def getStopInfo(self, url, blocking=True, callback=None):
-        pass
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # ----                                       PARSING METHODS                                                  ---- #
+    #                                                                                                                  #
+    # Basically, Core API methods are more than enough. Parsing methods are used to simplify several tasks,            #
+    # like getting only the list of stops for a route, counting vehicles on the route,                                 #
+    # counting how many stops a buss will need to pass till it arrives to desired stop,                                #
+    # or just providing all information for Information Displays (bus number, bus route, time to wait).                #
+    # -----------------------------------------------------------------------------------------------------------------#
 
-    def getRouteInfo(self, url, blocking=True, callback=None):
-        pass
+    def countVehiclesOnRoute(self, vehicles_info):
+        """
+        Count vehicles on the route.
+        :param vehicles_info: data from getVehiclesInfo method
+        :return:
+        """
+        if vehicles_info is None:
+            return None
 
-    def getVehiclesInfo(self, url, blocking=True, callback=None):
-        pass
+        result = 0
+        if 'data' in vehicles_info:
+            for entry in vehicles_info['data']:
+                if 'properties' in entry:
+                    if 'VehicleMetaData' in entry['properties']:
+                        if 'Transport' in entry['properties']['VehicleMetaData']:
+                            result += 1
 
-    def getAllInfo(self, url, blocking=True, callback=None):
-        pass
+        return result
+
 
 if __name__ == '__main__':
     print("Started")
     transport_proxy = YandexTransportProxy('127.0.0.1', 25555)
-    result = transport_proxy.echo("msg=Hello!", blocking=False, callback=transport_proxy.callback_fun)
-    transport_proxy.log.info("Async works!")
+    #result = transport_proxy.echo("msg=Hello!", blocking=False, callback=transport_proxy.callback_fun)
+    #result = transport_proxy.getEcho("Hello!", query_id='ALPHA', blocking=True)
+    #print(result)
+    url = "https://yandex.ru/maps/213/moscow/?ll=37.730525%2C55.723958&masstransit%5BrouteId%5D=213_63_trolleybus_mosgortrans&masstransit%5BstopId%5D=2048564130&masstransit%5BthreadId%5D=2036925978&mode=stop&z=11"
+    vehicles_data = transport_proxy.getVehiclesInfo(url)
+    count = transport_proxy.countVehiclesOnRoute(vehicles_data)
+    print("Vehicles on route:", count)
+    #print(json.dumps(result, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
+
+
+    #transport_proxy.log.info("Async works!")
     #print(json.dumps(result, sort_keys=True, indent=4, separators=(',', ': ')))
-    time.sleep(10)
+    #time.sleep(10)
     print("Terminated!")
