@@ -22,7 +22,7 @@ import socket
 import json
 import uuid
 import threading
-from Logger import Logger
+from YandexTransportWebdriverAPI.Logger import Logger
 
 # NOTE: This project uses camelCase for function names. While PEP8 recommends using snake_case for these,
 #       the project in fact implements the "quasi-API" for Yandex Masstransit, where names are in camelCase,
@@ -52,7 +52,7 @@ class YandexTransportProxy:
 
         self.buffer_size = 4096
 
-        self.log = Logger(Logger.DEBUG)
+        self.log = Logger(Logger.INFO)
 
     def callbackFunctionExample(self, data):
         """
@@ -210,7 +210,7 @@ class YandexTransportProxy:
     # ---------------------------------------------------------------------------------------------------------------- #
     # ----                                     SERVER CONTROL METHODS                                             ---- #
     #                                                                                                                  #
-    # These are the methods to control and test Yandex Transport Proxy server behaviour.                               #
+    # These are the methods to control and test.py Yandex Transport Proxy server behaviour.                               #
     # ---------------------------------------------------------------------------------------------------------------- #
 
     # NOTE: there are 5 parameters for get... methods, not counting self. All are important.

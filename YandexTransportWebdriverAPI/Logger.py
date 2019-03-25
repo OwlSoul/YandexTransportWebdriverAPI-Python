@@ -12,9 +12,9 @@ No log messages above current verbose level will be printed.
 #  Disabling pylint snakeCase check for module name.
 # pylint: enable=C0103
 
-
 import sys
 import datetime
+
 
 class Logger:
     """

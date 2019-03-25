@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pytest --show-progress --show-capture=all
+python3 -m pytest --show-progress --show-capture=all

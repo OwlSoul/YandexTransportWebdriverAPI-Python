@@ -1,7 +1,7 @@
 """
 Yandex Transport Webdriver API - Python tests.
 
-NOTE: These are Unit Tests, they should test function behaviour based on input data only, and should NOT
+NOTE: These are Unit Tests, they should test.py function behaviour based on input data only, and should NOT
       rely on current state of Yandex API. These tests are executed once during "build" stage.
       Do not use Live Data from Yandex MassTransit here, only saved one. Live Data is tested in
       Integration Tests/Continuous Monitoring tests.
@@ -24,7 +24,7 @@ def wait_random_time():
     time.sleep(random.randint(15, 45))
 
 def test_initial():
-    """Most basic test to ensure pytest DEFINITELY works"""
+    """Most basic test.py to ensure pytest DEFINITELY works"""
     assert True == True
 
 
@@ -217,7 +217,7 @@ def test_countVehiclesOnRoute_NoData():
 
 def test_countVehiclesOnRoute_SavedData_Bus_M7():
     """
-    Count vehicles on route from test data, 8 buses on route.
+    Count vehicles on route from test.py data, 8 buses on route.
     """
     with open('testdata/getRouteInfo_bus-M7.json', 'r') as json_file:
         data = json.load(json_file)
