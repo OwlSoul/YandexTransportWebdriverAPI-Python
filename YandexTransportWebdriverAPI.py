@@ -18,6 +18,12 @@ class YandexTransportProxy:
     ERROR_OK = 0
     ERROR_TIMEOUT = 1
 
+    # Result error codes
+    RESULT_OK = 0
+    RESULT_NO_DATA = 1
+    RESULT_GET_ERROR = 2
+    RESULT_NO_YANDEX_DATA = 3
+
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -71,11 +77,12 @@ class YandexTransportProxy:
                     if callback is not None:
                         callback(json_data)
                     # TODO: probably make these separate functions and remove from here
-                    # Check if request was added to queue
-                    if 'queue_posistion' in json_data:
-                        if 'error' in json_data:
-                            if json_data['error'] != 'OK':
-                                raise Exception('Server error: ' + json_data['error'])
+
+                    # Check if errors occurred
+                    if 'error' in json_data:
+                        if json_data['error'] != self.RESULT_OK:
+                            raise Exception('Server error: ' + json_data['message'])
+
                     # Check if expect_more_data is present and is false
                     if 'expect_more_data' in json_data:
                         if json_data['expect_more_data'] == False:
@@ -358,8 +365,10 @@ class YandexTransportProxy:
 if __name__ == '__main__':
     print("Started")
     transport_proxy = YandexTransportProxy('127.0.0.1', 25555)
-    url = "https://yandex.ru/maps/213/moscow/?ll=37.561491%2C55.762169&masstransit%5BrouteId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
-    vehicles_data = transport_proxy.getVehiclesInfoWithRegion(url)
-    count = transport_proxy.countVehiclesOnRoute(vehicles_data)
-    print("Vehicles on route:", count)
+    #url = 'https://yandex.ru/maps/214/dolgoprudniy/?ll=37.515559%2C55.939941&masstransit%5BrouteId%5D=6f6f_33_bus_default&masstransit%5BstopId%5D=stop__9686981&masstransit%5BthreadId%5D=6f6fB_33_bus_default&mode=stop&z=17'
+    #url = "https://yandex.ru/maps/213/moscow/?ll=37.561491%2C55.762169&masstransit%5BrouteId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
+    url = transport_proxy.getAllInfo("https://varlamov.ru")
+    vehicles_data = transport_proxy.getAllInfo(url)
+    #count = transport_proxy.countVehiclesOnRoute(vehicles_data)
+    #print("Vehicles on route:", count)
     print("Terminated!")
