@@ -252,6 +252,7 @@ class YandexTransportProxy:
     def getVehiclesInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Request information about vehicles of one mass transit route from Yandex API.
+        Seems to be deprecated as 03-25-2019
         :param query_id: string, ID of the query to send to the server, all responces to this query will
                          contain this exact ID.
                          Default is None, in this case it will be randomly generated,
@@ -271,6 +272,31 @@ class YandexTransportProxy:
                  for non-blocking mode: empty string
         """
         result = self._executeGetQuery('getVehiclesInfo', url, query_id, blocking, timeout, callback)
+        return result[-1]['data']
+
+    def getVehiclesInfoWithRegion(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+        """
+        Request information about vehicles of one mass transit route from Yandex API.
+        New method starting 03-25-2019, now includes "region" info.
+        :param query_id: string, ID of the query to send to the server, all responces to this query will
+                         contain this exact ID.
+                         Default is None, in this case it will be randomly generated,
+                         You can get it from the callback function by using data['id']
+                         if your callback function is like this: callback_fun(data)
+        :param url: Yandex Maps URL of the route.
+        :param blocking: boolean, default is True, will block until the final response will be received.
+                      Note: this may take a while, several seconds and more.
+        :param timeout: integer, default is off, will raise a socket.timeout exception is no data is received
+                      during this period.
+                      Mind the server delay between processing queries, this value definitely should be bigger!
+                      If set to 0 - will wait indefinitely.
+        :param callback: Callback function to call when a new JSON is received.
+                         Used if block is set to False.
+        :return: for blocking mode: dictionary containing information about vehicles of requested route. Use
+                 json.dumps() function to get original Yandex API JSON.
+                 for non-blocking mode: empty string
+        """
+        result = self._executeGetQuery('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
     def getAllInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
@@ -311,45 +337,29 @@ class YandexTransportProxy:
     # -----------------------------------------------------------------------------------------------------------------#
 
     @staticmethod
-    def countVehiclesOnRoute(vehicles_info, raise_exception=False):
+    def countVehiclesOnRoute(vehicles_info, with_region=True):
         """
-        Count vehicles on the route.
+        Count vehicles on the route. As simple as counting number of elements in
+        vehicle_info['data']['vehicles'].
         :param vehicles_info: data from getVehiclesInfo method
-        :param raise_exception: raise exception if error is encoutered
         :return:
         """
         if vehicles_info is None:
-            cond_exception(raise_exception, Exception, "No vehicles data provided!")
             return None
 
-        result = 0
-
-        if 'data' in vehicles_info:
-            for entry in vehicles_info['data']:
-                if 'properties' in entry:
-                    if 'VehicleMetaData' in entry['properties']:
-                        if 'Transport' in entry['properties']['VehicleMetaData']:
-                            result += 1
-                        else:
-                            cond_exception(raise_exception, Exception,
-                                           'Malformed JSON: no "Transport" field in "VehicleMetaData"')
-                    else:
-                        cond_exception(raise_exception, Exception,
-                                       'Malformed JSON: no "VehicleMetaData" field in "properties"')
-                else:
-                    cond_exception(raise_exception, Exception,
-                                   'Malformed JSON: no "properties" field in "data" entry.')
+        # If data received from getVehiclesInfoWithRegion
+        if with_region:
+            return len(vehicles_info['data']['vehicles'])
+        # DEPRECATED: if data received from getVehiclesInfo
         else:
-            cond_exception(raise_exception, Exception,
-                           'Malformed JSON: no "data" field present.')
-        return result
+            return len(vehicles_info['data'])
 
 
 if __name__ == '__main__':
     print("Started")
     transport_proxy = YandexTransportProxy('127.0.0.1', 25555)
     url = "https://yandex.ru/maps/213/moscow/?ll=37.561491%2C55.762169&masstransit%5BrouteId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
-    vehicles_data = transport_proxy.getVehiclesInfo(url)
+    vehicles_data = transport_proxy.getVehiclesInfoWithRegion(url)
     count = transport_proxy.countVehiclesOnRoute(vehicles_data)
     print("Vehicles on route:", count)
     print("Terminated!")

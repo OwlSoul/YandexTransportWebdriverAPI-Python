@@ -70,35 +70,27 @@ def test_countVehiclesOnRoute_NoData():
     result = transport_proxy.countVehiclesOnRoute(None)
     assert result is None
 
-def test_countVehiclesOnRoute_NoData_RaiseException():
-    """
-    Count vehicles with no data provided, should return None
-    """
-    transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
-    with pytest.raises(Exception):
-        result = transport_proxy.countVehiclesOnRoute(None, raise_exception=True)
-
 def test_countVehiclesOnRoute_SavedData_Bus_M7():
     """
     Count vehicles on route from test data, 8 buses on route.
     """
     with open('testdata/getRouteInfo_bus-M7.json', 'r') as json_file:
         data = json.load(json_file)
-    result = YandexTransportProxy.countVehiclesOnRoute(data, raise_exception=True)
+    result = YandexTransportProxy.countVehiclesOnRoute(data, with_region=False)
     assert result == 8
 
 def test_count_VehiclesOnRoute_LiveData_Bus_M2_JSONIntegrity():
     """
-    TODO: This is an Integration Test, move it somewhere later.
+    TODO: This is an Integration Test move it somewhere later.
     Count vehicles on route based on life data. Should not raise any exceptions and return a number.
     If data is None shall return None
     Testing on Moscow Bus Route M2
     """
     transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
     url = "https://yandex.ru/maps/213/moscow/?ll=37.595480%2C55.762943&masstransit%5BrouteId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
-    data = transport_proxy.getVehiclesInfo(url)
+    data = transport_proxy.getVehiclesInfoWithRegion(url)
     if data is None:
         result = 0
     else:
-        result = transport_proxy.countVehiclesOnRoute(data, raise_exception=True)
+        result = transport_proxy.countVehiclesOnRoute(data, with_region=True)
     assert result >= 0
