@@ -1,19 +1,40 @@
 #!/usr/bin/env python3
 
+"""
+Yandex Transport/Masstransit Webdriver API. This module is to be used together
+with YandexTransportProxy project (https://github.com/OwlSoul/YandexTransportProxy).
+
+It provides some limited access to Yandex Masstransit API. While it's difficult to get all the masstransit data
+of one city using this thing, it makes it possible to get a data for particular stop or route, which you can
+use in various automation systems (take an example, the alarm which will ring when your pretty unfrequent bus departs
+from terminal station).
+"""
+
+__author__ = "Yury D."
+__credits__ = ["Yury D.", "Pavel Lutskov", "Yury Alexeev"]
+__license__ = "MIT"
+__version__ = "1.0.0-beta"
+__maintainer__ = "Yury D."
+__email__ = "SoulGate@yandex.ru"
+__status__ = "Beta"
+
 import socket
 import json
-import time
 import uuid
 import threading
 from Logger import Logger
 
-__version__ = '2.0.0-alpha'
-
-def cond_exception(do_raise, exception_type, text):
-        if do_raise:
-            raise exception_type(text)
+# NOTE: This project uses camelCase for function names. While PEP8 recommends using snake_case for these,
+#       the project in fact implements the "quasi-API" for Yandex Masstransit, where names are in camelCase,
+#       for example, getStopInfo. Correct naming for this function according to PEP8 would be get_stop_info.
+#       Thus, the desision to use camelCase was made. In fact, there are a bunch of python projects which use
+#       camelCase, like Robot Operating System.
+#       I also personally find camelCase more pretier than the snake_case.
 
 class YandexTransportProxy:
+    """
+    YandexTransportProxy class, provides proxy access to Yandex Transport Masstransit API.
+    """
 
     ERROR_OK = 0
     ERROR_TIMEOUT = 1
@@ -32,10 +53,19 @@ class YandexTransportProxy:
 
         self.log = Logger(Logger.DEBUG)
 
-    def callback_fun_example(self, data):
+    def callbackFunctionExample(self, data):
+        """
+        Example of Callback function. This will be called each time complete JSON arrives fo
+        :param data: JSON data message receive
+        :return:
+        """
         self.log.info("Received data:" + str(data))
 
     class ListenerThread(threading.Thread):
+        """
+        Listener Thread class, one is created for each incoming query.
+        """
+        # pylint: disable = R0913
         def __init__(self, app, sock, query_id, command, callback):
             super().__init__()
             self.app = app
@@ -43,13 +73,14 @@ class YandexTransportProxy:
             self.query_id = query_id
             self.sock = sock
             self.callback_function = callback
+        # pylint: enable = R0913
 
         def run(self):
-            self.app._single_query_blocking(self.sock, self.command, self.callback_function)
-            self.app._disconnect(self.sock)
+            self.app.singleQueryBlocking(self.sock, self.command, self.callback_function)
+            self.app.disconnect(self.sock)
             self.app.log.debug("Listener thread for query with ID="+str(self.query_id) +" terminated.")
 
-    def _single_query_blocking(self, sock, command, callback=None):
+    def singleQueryBlocking(self, sock, command, callback=None):
         """
         Execute single blocking query
         :param sock: socket
@@ -85,8 +116,10 @@ class YandexTransportProxy:
 
                     # Check if expect_more_data is present and is false
                     if 'expect_more_data' in json_data:
+                        #pylint: disable=C0121
                         if json_data['expect_more_data'] == False:
                             completed = True
+                        #pylint: enable=C0121
 
                         if 'data' in json_data:
                             result.append({'method': json_data['method'], 'data':json_data["data"]})
@@ -114,7 +147,7 @@ class YandexTransportProxy:
         self.log.debug("Connected to server " + str(self.host) + ":" + str(self.port))
         return sock, error
 
-    def _disconnect(self, sock):
+    def disconnect(self, sock):
         """
         Disconnect from the server
         :param sock: socket
@@ -126,14 +159,15 @@ class YandexTransportProxy:
         else:
             self.log.error("Socket is empty!")
 
-    def _executeGetQuery(self, command, payload, query_id=None,
-                         blocking=True, timeout=0,
-                         callback=None):
+    def executeGetQuery(self, command, payload, query_id=None,
+                        blocking=True, timeout=0,
+                        callback=None):
         """
         Meta-command to implement getXXX requests.
         :param command: string, command to implement, for example getStopInfo
         :param payload: string, command payload, url of stop or route
-        :param query_id: string, query_id to be passed to the server, all responses to this query will return with this value
+        :param query_id: string, query_id to be passed to the server, all responses to this query will return with
+               this value
         :param blocking: boolean, blocking or non-blocking
         :param timeout: integer, connection timeout value, 0 to switch off
         :param callback: callback function to be called each time response JSON arrives, for non-blocking scenario
@@ -156,26 +190,31 @@ class YandexTransportProxy:
             # This might take a while, will block
             if timeout > 0:
                 sock.settimeout(timeout)
-            result = self._single_query_blocking(sock, command)
-            self._disconnect(sock)
+            result = self.singleQueryBlocking(sock, command)
+            self.disconnect(sock)
         else:
             # This will return immideately, will not block
             result = ''
             self.ListenerThread(self, sock, query_id, command, callback).start()
 
+        # Well, turns out if len(result) > 0 is less productive than if result.
+        # This ugly thing is a "result", pun not intended.
         if blocking:
-            if len(result) > 0:
+            if result:                             # if len(result) > 0
                 return result
-            else:
-                raise Exception("No data is received")
-        else:
-            return None
+            raise Exception("No data is received") # if len(result) == 0
+
+        return None
 
     # ---------------------------------------------------------------------------------------------------------------- #
     # ----                                     SERVER CONTROL METHODS                                             ---- #
     #                                                                                                                  #
     # These are the methods to control and test Yandex Transport Proxy server behaviour.                               #
     # ---------------------------------------------------------------------------------------------------------------- #
+
+    # NOTE: there are 5 parameters for get... methods, not counting self. All are important.
+    #       Linter will need to deal with it.
+    #pylint: disable = R0913
 
     def getEcho(self, text, query_id=None, blocking=True, timeout=0, callback=None):
         """
@@ -198,7 +237,7 @@ class YandexTransportProxy:
         :return: for blocking mode: string, should be equal to text parameter.
                  for non-blocking mode: empty string
         """
-        result = self._executeGetQuery('getEcho', text, query_id, blocking, timeout, callback)
+        result = self.executeGetQuery('getEcho', text, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
     # ---------------------------------------------------------------------------------------------------------------- #
@@ -229,7 +268,7 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self._executeGetQuery('getStopInfo', url, query_id, blocking, timeout, callback)
+        result = self.executeGetQuery('getStopInfo', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
     def getRouteInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
@@ -253,7 +292,7 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self._executeGetQuery('getRouteInfo', url, query_id, blocking, timeout, callback)
+        result = self.executeGetQuery('getRouteInfo', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
     def getVehiclesInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
@@ -278,7 +317,7 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self._executeGetQuery('getVehiclesInfo', url, query_id, blocking, timeout, callback)
+        result = self.executeGetQuery('getVehiclesInfo', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
     def getVehiclesInfoWithRegion(self, url, query_id=None, blocking=True, timeout=0, callback=None):
@@ -303,7 +342,7 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self._executeGetQuery('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
+        result = self.executeGetQuery('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
     def getAllInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
@@ -330,8 +369,10 @@ class YandexTransportProxy:
                                           data   - another dictionary containing all data for given method.
                  for non-blocking mode: empty string
                 """
-        result = self._executeGetQuery('getAllInfo', url, query_id, blocking, timeout, callback)
+        result = self.executeGetQuery('getAllInfo', url, query_id, blocking, timeout, callback)
         return result
+
+    # pylint: enable = R0913
 
     # ---------------------------------------------------------------------------------------------------------------- #
     # ----                                       PARSING METHODS                                                  ---- #
@@ -357,18 +398,10 @@ class YandexTransportProxy:
         # If data received from getVehiclesInfoWithRegion
         if with_region:
             return len(vehicles_info['data']['vehicles'])
-        # DEPRECATED: if data received from getVehiclesInfo
-        else:
-            return len(vehicles_info['data'])
+
+        # SEEMS DEPRECATED: if data received from getVehiclesInfo
+        return len(vehicles_info['data'])
 
 
 if __name__ == '__main__':
-    print("Started")
-    transport_proxy = YandexTransportProxy('127.0.0.1', 25555)
-    #url = 'https://yandex.ru/maps/214/dolgoprudniy/?ll=37.515559%2C55.939941&masstransit%5BrouteId%5D=6f6f_33_bus_default&masstransit%5BstopId%5D=stop__9686981&masstransit%5BthreadId%5D=6f6fB_33_bus_default&mode=stop&z=17'
-    #url = "https://yandex.ru/maps/213/moscow/?ll=37.561491%2C55.762169&masstransit%5BrouteId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
-    url = transport_proxy.getAllInfo("https://varlamov.ru")
-    vehicles_data = transport_proxy.getAllInfo(url)
-    #count = transport_proxy.countVehiclesOnRoute(vehicles_data)
-    #print("Vehicles on route:", count)
-    print("Terminated!")
+    print("Do not run this module on its own!")

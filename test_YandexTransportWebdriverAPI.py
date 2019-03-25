@@ -6,7 +6,7 @@ NOTE: These are Unit Tests, they should test function behaviour based on input d
       Do not use Live Data from Yandex MassTransit here, only saved one. Live Data is tested in
       Integration Tests/Continuous Monitoring tests.
 
-NOTE: Tests require running YandexTransportProxy server.
+NOTE: Tests require running YandexTransportProxy server
 """
 
 import pytest
