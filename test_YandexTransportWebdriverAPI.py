@@ -10,7 +10,6 @@ NOTE: Tests require running YandexTransportProxy server
 """
 
 import pytest
-import socket
 import random
 import time
 import json

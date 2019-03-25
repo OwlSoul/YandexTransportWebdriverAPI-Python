@@ -6,7 +6,7 @@ with YandexTransportProxy project (https://github.com/OwlSoul/YandexTransportPro
 
 It provides some limited access to Yandex Masstransit API. While it's difficult to get all the masstransit data
 of one city using this thing, it makes it possible to get a data for particular stop or route, which you can
-use in various automation systems (take an example, the alarm which will ring when your pretty unfrequent bus departs
+use in various automation systems (take an example, the alarm which will ring when your pretty infrequent bus departs
 from terminal station).
 """
 
@@ -27,9 +27,10 @@ from Logger import Logger
 # NOTE: This project uses camelCase for function names. While PEP8 recommends using snake_case for these,
 #       the project in fact implements the "quasi-API" for Yandex Masstransit, where names are in camelCase,
 #       for example, getStopInfo. Correct naming for this function according to PEP8 would be get_stop_info.
-#       Thus, the desision to use camelCase was made. In fact, there are a bunch of python projects which use
+#       Thus, the decision to use camelCase was made. In fact, there are a bunch of python projects which use
 #       camelCase, like Robot Operating System.
-#       I also personally find camelCase more pretier than the snake_case.
+#       I also personally find camelCase more prettier than the snake_case.
+
 
 class YandexTransportProxy:
     """
@@ -78,7 +79,7 @@ class YandexTransportProxy:
         def run(self):
             self.app.singleQueryBlocking(self.sock, self.command, self.callback_function)
             self.app.disconnect(self.sock)
-            self.app.log.debug("Listener thread for query with ID="+str(self.query_id) +" terminated.")
+            self.app.log.debug("Listener thread for query with ID="+str(self.query_id) + " terminated.")
 
     def singleQueryBlocking(self, sock, command, callback=None):
         """
@@ -116,13 +117,13 @@ class YandexTransportProxy:
 
                     # Check if expect_more_data is present and is false
                     if 'expect_more_data' in json_data:
-                        #pylint: disable=C0121
-                        if json_data['expect_more_data'] == False:
+                        # pylint: disable=C0121
+                        if not json_data['expect_more_data']:
                             completed = True
-                        #pylint: enable=C0121
+                        # pylint: enable=C0121
 
                         if 'data' in json_data:
-                            result.append({'method': json_data['method'], 'data':json_data["data"]})
+                            result.append({'method': json_data['method'], 'data': json_data["data"]})
 
                 else:
                     buffer += c
@@ -193,16 +194,16 @@ class YandexTransportProxy:
             result = self.singleQueryBlocking(sock, command)
             self.disconnect(sock)
         else:
-            # This will return immideately, will not block
+            # This will return immediately, will not block
             result = ''
             self.ListenerThread(self, sock, query_id, command, callback).start()
 
         # Well, turns out if len(result) > 0 is less productive than if result.
         # This ugly thing is a "result", pun not intended.
         if blocking:
-            if result:                             # if len(result) > 0
+            if result:                              # if len(result) > 0
                 return result
-            raise Exception("No data is received") # if len(result) == 0
+            raise Exception("No data is received")  # if len(result) == 0
 
         return None
 
@@ -214,13 +215,13 @@ class YandexTransportProxy:
 
     # NOTE: there are 5 parameters for get... methods, not counting self. All are important.
     #       Linter will need to deal with it.
-    #pylint: disable = R0913
+    # pylint: disable = R0913
 
     def getEcho(self, text, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Test command, will echo back the text. Note, the "echo" query is added to the Query Queue of the
         YandexTransportProxy server, and will be executed only then it is its turn.
-        :param query_id: string, ID of the query to send to the server, all responces to this query will
+        :param query_id: string, ID of the query to send to the server, all responses to this query will
                          contain this exact ID.
                          Default is None, in this case it will be randomly generated,
                          You can get it from the callback function by using data['id']
@@ -250,7 +251,7 @@ class YandexTransportProxy:
     def getStopInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Request information about one mass transit stop from Yandex API.
-        :param query_id: string, ID of the query to send to the server, all responces to this query will
+        :param query_id: string, ID of the query to send to the server, all responses to this query will
                          contain this exact ID.
                          Default is None, in this case it will be randomly generated,
                          You can get it from the callback function by using data['id']
@@ -274,7 +275,7 @@ class YandexTransportProxy:
     def getRouteInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Request information about one mass transit route from Yandex API.
-        :param query_id: string, ID of the query to send to the server, all responces to this query will
+        :param query_id: string, ID of the query to send to the server, all responses to this query will
                          contain this exact ID.
                          Default is None, in this case it will be randomly generated,
                          You can get it from the callback function by using data['id']
@@ -299,7 +300,7 @@ class YandexTransportProxy:
         """
         Request information about vehicles of one mass transit route from Yandex API.
         Seems to be deprecated as 03-25-2019
-        :param query_id: string, ID of the query to send to the server, all responces to this query will
+        :param query_id: string, ID of the query to send to the server, all responses to this query will
                          contain this exact ID.
                          Default is None, in this case it will be randomly generated,
                          You can get it from the callback function by using data['id']
@@ -324,7 +325,7 @@ class YandexTransportProxy:
         """
         Request information about vehicles of one mass transit route from Yandex API.
         New method starting 03-25-2019, now includes "region" info.
-        :param query_id: string, ID of the query to send to the server, all responces to this query will
+        :param query_id: string, ID of the query to send to the server, all responses to this query will
                          contain this exact ID.
                          Default is None, in this case it will be randomly generated,
                          You can get it from the callback function by using data['id']
@@ -349,7 +350,7 @@ class YandexTransportProxy:
         """
         Wildcard method, will return ALL Yandex Masstransit API responses from given URL.
         For example, "route" url will return getRouteInfo and getVehiclesInfo in sequence.
-        :param query_id: string, ID of the query to send to the server, all responces to this query will
+        :param query_id: string, ID of the query to send to the server, all responses to this query will
                          contain this exact ID.
                          Default is None, in this case it will be randomly generated,
                          You can get it from the callback function by using data['id']
@@ -389,7 +390,9 @@ class YandexTransportProxy:
         """
         Count vehicles on the route. As simple as counting number of elements in
         vehicle_info['data']['vehicles'].
-        :param vehicles_info: data from getVehiclesInfo method
+        :param vehicles_info: data from getVehiclesInfo or getVehiclesInfoWithRegion method
+        :param with_region: True by default, if true, vehicles_info is expected to be from getVehiclesIfoWithRegion,
+                            if False - from getVehiclesInfo.
         :return:
         """
         if vehicles_info is None:
