@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuite errors="0" failures="0" name="pytest" skipped="0" tests="1" time="0.023"><testcase classname="tests.continuous_monitoring_tests" file="tests/continuous_monitoring_tests.py" line="23" name="test_initial" time="0.001"></testcase></testsuite>
