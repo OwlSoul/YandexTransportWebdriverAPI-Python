@@ -20,6 +20,11 @@ SERVER_PORT = 25555
 
 # Station URLs used in tests.
 # Template: {"": ""}
+mini_set = \
+    [{"Москва/Метро Сокол": "https://yandex.ru/maps/213/moscow/?ll=37.511152%2C55.804204&masstransit%5BstopId%5D=stop__9647423&mode=stop&z=17"},
+     {"Москва/Улица Станиславского": "https://yandex.ru/maps/213/moscow/?ll=37.664542%2C55.744704&masstransit%5BstopId%5D=stop__9647379&mode=stop&z=17"}
+    ]
+
 station_urls = \
     [{"Москва/Метро Сокол": "https://yandex.ru/maps/213/moscow/?ll=37.511152%2C55.804204&masstransit%5BstopId%5D=stop__9647423&mode=stop&z=17"},
      {"Москва/Улица Станиславского": "https://yandex.ru/maps/213/moscow/?ll=37.664542%2C55.744704&masstransit%5BstopId%5D=stop__9647379&mode=stop&z=17"},
@@ -41,15 +46,95 @@ station_urls = \
      {"Якутск/Школа №7": "https://yandex.ru/maps/74/yakutsk/?ll=129.725800%2C62.037399&mode=poi&poi%5Bpoint%5D=129.728085%2C62.036624&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D179807288972&sll=37.586616%2C55.802258&sspn=0.036435%2C0.012545&text=%D1%8F%D0%BA%D1%83%D1%82%D1%81%D0%BA&z=16"}
     ]
 
-# Accumulated results:
-station_results = []
-route_results = []
-vehicles_results = []
+routes_urls = [{"Москва/Автобус 105": "https://yandex.ru/maps/213/moscow/?ll=37.517402%2C55.804455&masstransit%5BrouteId%5D=213_105_bus_mosgortrans&masstransit%5BstopId%5D=stop__9647423&masstransit%5BthreadId%5D=213A_105_bus_mosgortrans&mode=stop&z=14"},
+               {"Москва/Троллейбус 53": "https://yandex.ru/maps/213/moscow/?ll=37.746753%2C55.737977&masstransit%5BrouteId%5D=2036926340&masstransit%5BstopId%5D=stop__9647379&masstransit%5BthreadId%5D=213A_53_trolleybus_mosgortrans&mode=stop&z=13"},
+               {"Москва/Автобус 12": "https://yandex.ru/maps/213/moscow/?ll=37.546941%2C55.755232&masstransit%5BrouteId%5D=213_12_bus_mosgortrans&masstransit%5BstopId%5D=stop__9649559&masstransit%5BthreadId%5D=213A_12_bus_mosgortrans&mode=stop&z=15"},
+               {"Москва/Троллейбус 54": "https://yandex.ru/maps/213/moscow/?ll=37.587580%2C55.770117&masstransit%5BrouteId%5D=213_54_trolleybus_mosgortrans&masstransit%5BstopId%5D=stop__9648355&masstransit%5BthreadId%5D=2036927249&mode=stop&z=17"},
+               {"Москва/Автобус Н1": "https://yandex.ru/maps/213/moscow/?ll=37.634151%2C55.754175&masstransit%5BrouteId%5D=N1_bus_default&masstransit%5BstopId%5D=stop__10187976&masstransit%5BthreadId%5D=2036926069&mode=stop&z=19"},
+               {"Петропавловск-Камчатский/Автобус 1": "https://yandex.ru/maps/78/petropavlovsk/?ll=158.650965%2C53.015840&masstransit%5BrouteId%5D=1704841626&masstransit%5BstopId%5D=1543338149&masstransit%5BthreadId%5D=2163257102&mode=stop&z=17"},
+               {"Магадан/Автобус 1": "https://yandex.ru/maps/79/magadan/?ll=150.800171%2C59.560040&masstransit%5BrouteId%5D=1704917872&masstransit%5BstopId%5D=1941449091&masstransit%5BthreadId%5D=1952775971&mode=stop&z=16"},
+               {"Владивосток/Маршрутка 24": "https://yandex.ru/maps/75/vladivostok/?ll=131.886671%2C43.115497&masstransit%5BrouteId%5D=2468209792&masstransit%5BstopId%5D=stop__9980150&masstransit%5BthreadId%5D=2468209966&mode=stop&z=17"},
+               {"Якутск/Автобус 104": "https://yandex.ru/maps/74/yakutsk/?ll=129.728396%2C62.035988&masstransit%5BrouteId%5D=1704844454&masstransit%5BstopId%5D=2040377980&masstransit%5BthreadId%5D=3442738945&mode=stop&z=16"},
+               {"Иркутск/Трамвай 4А": "https://yandex.ru/maps/63/irkutsk/?ll=104.259650%2C52.282821&masstransit%5BrouteId%5D=1962955244&masstransit%5BstopId%5D=stop__9795272&masstransit%5BthreadId%5D=1962955369&mode=stop&z=18"},
+               {"Красноярск/Маршрутка 130": "https://yandex.ru/maps/62/krasnoyarsk/?ll=92.832626%2C56.006039&masstransit%5BrouteId%5D=2611970500&masstransit%5BstopId%5D=stop__9901229&masstransit%5BthreadId%5D=2611970606&mode=stop&z=17"},
+               {"Омск/Троллейбус 12": "https://yandex.ru/maps/66/omsk/?ll=73.386035%2C54.939776&masstransit%5BrouteId%5D=2012848234&masstransit%5BstopId%5D=stop__9727412&masstransit%5BthreadId%5D=2012848632&mode=stop&z=17"},
+               {"Екатеринбург/Трамвай 5": "https://yandex.ru/maps/54/yekaterinburg/?ll=60.611944%2C56.863058&masstransit%5BrouteId%5D=2107048890&masstransit%5BstopId%5D=stop__9810370&masstransit%5BthreadId%5D=2107049173&mode=stop&z=18"},
+               {"Самара/Трамвай 5": "https://yandex.ru/maps/51/samara/?ll=50.102397%2C53.189701&masstransit%5BrouteId%5D=2193179444&masstransit%5BstopId%5D=stop__10097748&masstransit%5BthreadId%5D=2193179903&mode=stop&z=17"},
+               {"Санкт-Петербург/Троллейбус 22": "https://yandex.ru/maps/2/saint-petersburg/?ll=30.326364%2C59.935241&masstransit%5BrouteId%5D=22_trolleybus_discus&masstransit%5BstopId%5D=stop__10075220&masstransit%5BthreadId%5D=22B_trolleybus_discus&mode=stop&z=18"},
+               {"Калининград/Автобус 593": "https://yandex.ru/maps/22/kaliningrad/?ll=20.509223%2C54.712040&masstransit%5BrouteId%5D=3181656187&masstransit%5BstopId%5D=3313917805&masstransit%5BthreadId%5D=3181656277&mode=stop&z=18"},
+               {"Москва/Маршрутка 937к": "https://yandex.ru/maps/213/moscow/?ll=37.465495%2C55.878790&masstransit%5BrouteId%5D=937_minibus_default&masstransit%5BstopId%5D=stop__9680781&masstransit%5BthreadId%5D=937A_minibus_default&mode=stop&z=13"},
+               {"Москва/Трамвай А": "https://yandex.ru/maps/213/moscow/?ll=37.639842%2C55.764464&masstransit%5BrouteId%5D=213_A_tramway_mosgortrans&masstransit%5BstopId%5D=stop__9646383&masstransit%5BthreadId%5D=2036927519&mode=stop&z=18"}]
+
+# Accumulated results. Good idea is to actually SAVE accumulated data results.
+query_results = []
 
 def wait_random_time():
-    time.sleep(random.randint(15, 45))
+    value = random.randint(15, 45)
+    print("Waiting " + str(value) + " seconds.")
+    time.sleep(value)
+
+# -----                                          TESTS                                                           ----- #
 
 def test_initial():
     """Most basic test.py to ensure pytest DEFINITELY works"""
     assert True == True
 
+def test_data_collection():
+    """
+    Data collection test, every single request should return valid JSON object.
+    This test can be switched off, and data can be loaded from files instead during development.
+    This takes a huge amount of time to process, by the way, due to wait times between queries
+    (We don't want Yandex to get angry due to frequent queries, so we're playing safe here).
+    Expect about 40-60 minutes of data collection.
+    """
+    global query_results
+
+    print()
+
+    proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
+    for entry in station_urls:
+        for station, url in entry.items():
+            print("Collecting station: " + station + "... ", end='')
+            try:
+                result = proxy.getAllInfo(url)
+                for entry in result:
+                    query_results.append({"success": True,
+                                          "station": station,
+                                          "url": url,
+                                          "method": entry['method'],
+                                          "data": entry['data']})
+                print("OK!")
+            except Exception as e:
+                query_results.append({"success": False,
+                                      "station": station,
+                                      "url": url}
+                                     )
+                print("FAILED!")
+                print(str(e))
+            wait_random_time()
+
+    for entry in routes_urls:
+        for route, url in entry.items():
+            print("Collecting route: " + route + "... ", end='')
+            try:
+                result = proxy.getAllInfo(url)
+                for entry in result:
+                    query_results.append({"success": True,
+                                          "station": route,
+                                          "url": url,
+                                          "method": entry['method'],
+                                          "data": entry['data']})
+                print("OK!")
+            except Exception as e:
+                query_results.append({"success": False,
+                                      "station": station,
+                                      "url": url
+                                      })
+                print("FAILED!")
+                print(str(e))
+            wait_random_time()
+
+    # Saving data to files
+    f = open("test_data.json", "w", encoding='utf-8')
+    f.write(json.dumps(query_results, ensure_ascii=False))
+    f.close()

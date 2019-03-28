@@ -1,7 +1,8 @@
 #!/bin/bash
 
 python3 -m pytest \
--v \
+-vv \
+-s \
 --color=no \
 --junitxml test_results.xml \
 --show-progress \
