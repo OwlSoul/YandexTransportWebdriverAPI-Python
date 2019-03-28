@@ -68,8 +68,12 @@ routes_urls = [{"Москва/Автобус 105": "https://yandex.ru/maps/213/m
 # Accumulated results. Good idea is to actually SAVE accumulated data results.
 query_results = []
 
+# NOTE: It seems sometimes getting ALL services (get_stop_info, getLayerRegions etc) might fail.
+#       It may be a browser issue, or problem may be on Yandex side.
+#       In tests this sometimes appears near the end of strain of get_all_info queries while checking stops.
+#       For now we're increasing random period from 15-45 to 40-90
 def wait_random_time():
-    value = random.randint(15, 45)
+    value = random.randint(40, 90)
     print("Waiting " + str(value) + " seconds.")
     time.sleep(value)
 
@@ -79,6 +83,7 @@ def test_initial():
     """Most basic test.py to ensure pytest DEFINITELY works"""
     assert True == True
 
+#@pytest.mark.skip(reason="Testing data from file")
 def test_data_collection():
     """
     Data collection test, every single request should return valid JSON object.
@@ -96,20 +101,21 @@ def test_data_collection():
         for station, url in entry.items():
             print("Collecting station: " + station + "... ", end='')
             try:
-                result = proxy.getAllInfo(url)
+                result = proxy.get_all_info(url)
                 for entry in result:
                     query_results.append({"success": True,
                                           "station": station,
                                           "url": url,
                                           "method": entry['method'],
                                           "data": entry['data']})
-                print("OK!")
+                    print(entry['method'], end=' ')
+                print("[OK]")
             except Exception as e:
                 query_results.append({"success": False,
                                       "station": station,
                                       "url": url}
                                      )
-                print("FAILED!")
+                print("[FAILED]")
                 print(str(e))
             wait_random_time()
 
@@ -117,24 +123,37 @@ def test_data_collection():
         for route, url in entry.items():
             print("Collecting route: " + route + "... ", end='')
             try:
-                result = proxy.getAllInfo(url)
+                result = proxy.get_all_info(url)
                 for entry in result:
                     query_results.append({"success": True,
                                           "station": route,
                                           "url": url,
                                           "method": entry['method'],
                                           "data": entry['data']})
-                print("OK!")
+                    print(entry['method'], end=' ')
+                print("[OK]")
             except Exception as e:
                 query_results.append({"success": False,
                                       "station": station,
                                       "url": url
                                       })
-                print("FAILED!")
+                print("[FAILED]")
                 print(str(e))
             wait_random_time()
 
     # Saving data to files
-    f = open("test_data.json", "w", encoding='utf-8')
+    f = open('test_data.json', 'w', encoding='utf-8')
     f.write(json.dumps(query_results, ensure_ascii=False))
     f.close()
+
+def test_load_data_from_file():
+    f = open('test_data.json', 'r', encoding='utf-8')
+    data = f.readline()
+    f.close()
+    json_data = json.loads(data)
+    for entry in json_data:
+        print(entry["station"], entry["success"], end=' ')
+        if 'method' in entry:
+            print(entry["method"])
+        else:
+            print("")

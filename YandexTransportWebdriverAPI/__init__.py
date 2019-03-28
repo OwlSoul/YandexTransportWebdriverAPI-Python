@@ -1,1 +1,1 @@
-from YandexTransportWebdriverAPI.YandexTransportProxy import YandexTransportProxy
+from YandexTransportWebdriverAPI.yandex_transport_proxy import YandexTransportProxy

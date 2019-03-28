@@ -22,11 +22,11 @@ import socket
 import json
 import uuid
 import threading
-from YandexTransportWebdriverAPI.Logger import Logger
+from YandexTransportWebdriverAPI.logger import Logger
 
 # NOTE: This project uses camelCase for function names. While PEP8 recommends using snake_case for these,
 #       the project in fact implements the "quasi-API" for Yandex Masstransit, where names are in camelCase,
-#       for example, getStopInfo. Correct naming for this function according to PEP8 would be get_stop_info.
+#       for example, get_stop_info. Correct naming for this function according to PEP8 would be get_stop_info.
 #       Thus, the decision to use camelCase was made. In fact, there are a bunch of python projects which use
 #       camelCase, like Robot Operating System.
 #       I also personally find camelCase more prettier than the snake_case.
@@ -54,7 +54,7 @@ class YandexTransportProxy:
 
         self.log = Logger(Logger.INFO)
 
-    def callbackFunctionExample(self, data):
+    def callback_function_example(self, data):
         """
         Example of Callback function. This will be called each time complete JSON arrives fo
         :param data: JSON data message receive
@@ -77,11 +77,11 @@ class YandexTransportProxy:
         # pylint: enable = R0913
 
         def run(self):
-            self.app.singleQueryBlocking(self.sock, self.command, self.callback_function)
-            self.app.disconnect(self.sock)
+            self.app._single_query_blocking(self.sock, self.command, self.callback_function)
+            self.app._disconnect(self.sock)
             self.app.log.debug("Listener thread for query with ID="+str(self.query_id) + " terminated.")
 
-    def singleQueryBlocking(self, sock, command, callback=None):
+    def _single_query_blocking(self, sock, command, callback=None):
         """
         Execute single blocking query
         :param sock: socket
@@ -148,7 +148,7 @@ class YandexTransportProxy:
         self.log.debug("Connected to server " + str(self.host) + ":" + str(self.port))
         return sock, error
 
-    def disconnect(self, sock):
+    def _disconnect(self, sock):
         """
         Disconnect from the server
         :param sock: socket
@@ -160,12 +160,12 @@ class YandexTransportProxy:
         else:
             self.log.error("Socket is empty!")
 
-    def executeGetQuery(self, command, payload, query_id=None,
-                        blocking=True, timeout=0,
-                        callback=None):
+    def _execute_get_query(self, command, payload, query_id=None,
+                           blocking=True, timeout=0,
+                           callback=None):
         """
         Meta-command to implement getXXX requests.
-        :param command: string, command to implement, for example getStopInfo
+        :param command: string, command to implement, for example get_stop_info
         :param payload: string, command payload, url of stop or route
         :param query_id: string, query_id to be passed to the server, all responses to this query will return with
                this value
@@ -191,8 +191,8 @@ class YandexTransportProxy:
             # This might take a while, will block
             if timeout > 0:
                 sock.settimeout(timeout)
-            result = self.singleQueryBlocking(sock, command)
-            self.disconnect(sock)
+            result = self._single_query_blocking(sock, command)
+            self._disconnect(sock)
         else:
             # This will return immediately, will not block
             result = ''
@@ -217,7 +217,7 @@ class YandexTransportProxy:
     #       Linter will need to deal with it.
     # pylint: disable = R0913
 
-    def getEcho(self, text, query_id=None, blocking=True, timeout=0, callback=None):
+    def get_echo(self, text, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Test command, will echo back the text. Note, the "echo" query is added to the Query Queue of the
         YandexTransportProxy server, and will be executed only then it is its turn.
@@ -238,7 +238,7 @@ class YandexTransportProxy:
         :return: for blocking mode: string, should be equal to text parameter.
                  for non-blocking mode: empty string
         """
-        result = self.executeGetQuery('getEcho', text, query_id, blocking, timeout, callback)
+        result = self._execute_get_query('getEcho', text, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
     # ---------------------------------------------------------------------------------------------------------------- #
@@ -248,7 +248,7 @@ class YandexTransportProxy:
     # Each one usually returns pretty huge amount of data in JSON format.                                              #
     # ---------------------------------------------------------------------------------------------------------------- #
 
-    def getStopInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+    def get_stop_info(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Request information about one mass transit stop from Yandex API.
         :param query_id: string, ID of the query to send to the server, all responses to this query will
@@ -269,10 +269,10 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self.executeGetQuery('getStopInfo', url, query_id, blocking, timeout, callback)
+        result = self._execute_get_query('getStopInfo', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
-    def getRouteInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+    def get_route_info(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Request information about one mass transit route from Yandex API.
         :param query_id: string, ID of the query to send to the server, all responses to this query will
@@ -293,10 +293,10 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self.executeGetQuery('getRouteInfo', url, query_id, blocking, timeout, callback)
+        result = self._execute_get_query('getRouteInfo', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
-    def getVehiclesInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+    def get_vehicles_info(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Request information about vehicles of one mass transit route from Yandex API.
         Seems to be deprecated as 03-25-2019
@@ -318,10 +318,10 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self.executeGetQuery('getVehiclesInfo', url, query_id, blocking, timeout, callback)
+        result = self._execute_get_query('getVehiclesInfo', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
-    def getVehiclesInfoWithRegion(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+    def get_vehicles_info_with_region(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Request information about vehicles of one mass transit route from Yandex API.
         New method starting 03-25-2019, now includes "region" info.
@@ -343,13 +343,13 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self.executeGetQuery('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
+        result = self._execute_get_query('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
-    def getAllInfo(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+    def get_all_info(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Wildcard method, will return ALL Yandex Masstransit API responses from given URL.
-        For example, "route" url will return getRouteInfo and getVehiclesInfo in sequence.
+        For example, "route" url will return get_route_info and get_vehicles_info in sequence.
         :param query_id: string, ID of the query to send to the server, all responses to this query will
                          contain this exact ID.
                          Default is None, in this case it will be randomly generated,
@@ -366,11 +366,11 @@ class YandexTransportProxy:
                          Used if block is set to False.
         :return: for blocking mode: array of dictionaries in the following format:
                                     {'method': method, 'data': data}
-                                    where method - the API method called (getStopInfo, getRouteInfo, getVehiclesInfo)
+                                    where method - the API method called (get_stop_info, get_route_info, get_vehicles_info)
                                           data   - another dictionary containing all data for given method.
                  for non-blocking mode: empty string
                 """
-        result = self.executeGetQuery('getAllInfo', url, query_id, blocking, timeout, callback)
+        result = self._execute_get_query('getAllInfo', url, query_id, blocking, timeout, callback)
         return result
 
     # pylint: enable = R0913
@@ -386,23 +386,23 @@ class YandexTransportProxy:
     # -----------------------------------------------------------------------------------------------------------------#
 
     @staticmethod
-    def countVehiclesOnRoute(vehicles_info, with_region=True):
+    def count_vehicles_on_route(vehicles_info, with_region=True):
         """
         Count vehicles on the route. As simple as counting number of elements in
         vehicle_info['data']['vehicles'].
-        :param vehicles_info: data from getVehiclesInfo or getVehiclesInfoWithRegion method
+        :param vehicles_info: data from get_vehicles_info or get_vehicles_info_with_region method
         :param with_region: True by default, if true, vehicles_info is expected to be from getVehiclesIfoWithRegion,
-                            if False - from getVehiclesInfo.
+                            if False - from get_vehicles_info.
         :return:
         """
         if vehicles_info is None:
             return None
 
-        # If data received from getVehiclesInfoWithRegion
+        # If data received from get_vehicles_info_with_region
         if with_region:
             return len(vehicles_info['data']['vehicles'])
 
-        # SEEMS DEPRECATED: if data received from getVehiclesInfo
+        # SEEMS DEPRECATED: if data received from get_vehicles_info
         return len(vehicles_info['data'])
 
 
