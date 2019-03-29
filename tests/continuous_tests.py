@@ -77,14 +77,9 @@ def wait_random_time():
     print("Waiting " + str(value) + " seconds.")
     time.sleep(value)
 
-# -----                                          TESTS                                                           ----- #
-
-def test_initial():
-    """Most basic test.py to ensure pytest DEFINITELY works"""
-    assert True == True
-
-#@pytest.mark.skip(reason="Testing data from file")
-def test_data_collection():
+# -----                                        DATA COLLECTION                                                   ----- #
+do_data_collection = True
+def perform_data_collection():
     """
     Data collection test, every single request should return valid JSON object.
     This test can be switched off, and data can be loaded from files instead during development.
@@ -93,6 +88,9 @@ def test_data_collection():
     Expect about 40-60 minutes of data collection.
     """
     global query_results
+
+    if not do_data_collection:
+        return
 
     print()
 
@@ -126,7 +124,7 @@ def test_data_collection():
                 result = proxy.get_all_info(url)
                 for entry in result:
                     query_results.append({"success": True,
-                                          "station": route,
+                                          "route": route,
                                           "url": url,
                                           "method": entry['method'],
                                           "data": entry['data']})
@@ -134,7 +132,7 @@ def test_data_collection():
                 print("[OK]")
             except Exception as e:
                 query_results.append({"success": False,
-                                      "station": station,
+                                      "route": route,
                                       "url": url
                                       })
                 print("[FAILED]")
@@ -146,7 +144,10 @@ def test_data_collection():
     f.write(json.dumps(query_results, ensure_ascii=False))
     f.close()
 
-def test_load_data_from_file():
+    # Basically, always succeeds
+    assert True == True
+
+def load_data_from_file():
     f = open('test_data.json', 'r', encoding='utf-8')
     data = f.readline()
     f.close()
@@ -157,3 +158,20 @@ def test_load_data_from_file():
             print(entry["method"])
         else:
             print("")
+
+@pytest.fixture(scope="session", autouse=True)
+def prepare_data():
+    # Collect data from Yandex Maps, save it to a file
+    perform_data_collection()
+    # Load data from file for tests.
+    load_data_from_file()
+
+# -----                                          TESTS                                                           ----- #
+def test_data_load_stage():
+    """Needed to call perform_data_collection and load_data_from_file functions"""
+    print()
+    assert True == True
+
+def test_initial():
+    """Most basic test.py to ensure pytest DEFINITELY works"""
+    assert True == True

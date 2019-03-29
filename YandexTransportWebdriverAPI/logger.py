@@ -8,9 +8,6 @@ Log levels include NONE, ERROR, WARNING, INFO and DEBUG.
 No log messages above current verbose level will be printed.
 
 """
-# pylint: disable=C0103
-#  Disabling pylint snakeCase check for module name.
-# pylint: enable=C0103
 
 import sys
 import datetime

@@ -52,7 +52,7 @@ class YandexTransportProxy:
 
         self.buffer_size = 4096
 
-        self.log = Logger(Logger.INFO)
+        self.log = Logger(Logger.NONE)
 
     def callback_function_example(self, data):
         """
@@ -60,7 +60,7 @@ class YandexTransportProxy:
         :param data: JSON data message receive
         :return:
         """
-        self.log.info("Received data:" + str(data))
+        print("Received data:" + str(data))
 
     class ListenerThread(threading.Thread):
         """
