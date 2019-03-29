@@ -12,7 +12,7 @@ import pytest
 import random
 import time
 import json
-from YandexTransportWebdriverAPI import YandexTransportProxy
+from yandex_transport_webdriver_api import YandexTransportProxy
 
 # Working server settings
 SERVER_HOST = '127.0.0.1'
@@ -78,7 +78,7 @@ def wait_random_time():
     time.sleep(value)
 
 # -----                                        DATA COLLECTION                                                   ----- #
-do_data_collection = True
+do_data_collection = False
 def perform_data_collection():
     """
     Data collection test, every single request should return valid JSON object.
@@ -148,16 +148,24 @@ def perform_data_collection():
     assert True == True
 
 def load_data_from_file():
+    print()
     f = open('test_data.json', 'r', encoding='utf-8')
     data = f.readline()
     f.close()
     json_data = json.loads(data)
     for entry in json_data:
-        print(entry["station"], entry["success"], end=' ')
-        if 'method' in entry:
-            print(entry["method"])
-        else:
-            print("")
+        if 'station' in entry:
+            print('Station : ', entry["station"], ",", entry["success"], ",", end=' ')
+            if 'method' in entry:
+                print(entry["method"])
+            else:
+                print("")
+        if 'route' in entry:
+            print('Route   : ', entry["route"], ",", entry["success"], ",", end=' ')
+            if 'method' in entry:
+                print(entry["method"])
+            else:
+                print("")
 
 @pytest.fixture(scope="session", autouse=True)
 def prepare_data():

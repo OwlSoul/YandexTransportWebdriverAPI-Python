@@ -13,7 +13,7 @@ import pytest
 import random
 import time
 import json
-from YandexTransportWebdriverAPI import YandexTransportProxy
+from yandex_transport_webdriver_api import YandexTransportProxy
 
 # Working server settings
 SERVER_HOST = '127.0.0.1'

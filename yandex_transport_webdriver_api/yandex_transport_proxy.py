@@ -22,7 +22,7 @@ import socket
 import json
 import uuid
 import threading
-from YandexTransportWebdriverAPI.logger import Logger
+from yandex_transport_webdriver_api.logger import Logger
 
 # NOTE: This project uses camelCase for function names. While PEP8 recommends using snake_case for these,
 #       the project in fact implements the "quasi-API" for Yandex Masstransit, where names are in camelCase,
