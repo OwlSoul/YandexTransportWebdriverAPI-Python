@@ -346,6 +346,30 @@ class YandexTransportProxy:
         result = self._execute_get_query('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
         return result[-1]['data']
 
+    def get_layer_regions(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+        """
+        I have absolutely no idea that this thing does at the moment.
+        :param query_id: string, ID of the query to send to the server, all responses to this query will
+                         contain this exact ID.
+                         Default is None, in this case it will be randomly generated,
+                         You can get it from the callback function by using data['id']
+                         if your callback function is like this: callback_fun(data)
+        :param url: Yandex Maps URL of the route.
+        :param blocking: boolean, default is True, will block until the final response will be received.
+                      Note: this may take a while, several seconds and more.
+        :param timeout: integer, default is off, will raise a socket.timeout exception is no data is received
+                      during this period.
+                      Mind the server delay between processing queries, this value definitely should be bigger!
+                      If set to 0 - will wait indefinitely.
+        :param callback: Callback function to call when a new JSON is received.
+                         Used if block is set to False.
+        :return: for blocking mode: dictionary containing information about some weird stuff. Use
+                 json.dumps() function to get original Yandex API JSON.
+                 for non-blocking mode: empty string
+        """
+        result = self._execute_get_query('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
+        return result[-1]['data']
+
     def get_all_info(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
         Wildcard method, will return ALL Yandex Masstransit API responses from given URL.

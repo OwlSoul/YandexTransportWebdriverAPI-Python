@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuite errors="0" failures="1" name="pytest" skipped="0" tests="13" time="241.350"><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="25" name="test_initial" time="0.001"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="30" name="test_connection_refused" time="0.001"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="40" name="test_connection_no_route" time="0.012"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="50" name="test_connection_to_working_server" time="0.001"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="60" name="test_echo_response" time="0.702"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="69" name="test_get_stop_info_input" time="52.456"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="97" name="test_get_route_info_input" time="58.863"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="125" name="test_get_vehicles_info_input" time="56.568"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="153" name="test_get_vehicles_info_with_region_input" time="51.538"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="181" name="test_get_all_info_input" time="14.674"><failure message="Failed: DID NOT RAISE &lt;class &apos;Exception&apos;&gt;">def test_get_all_info_input():
+        &quot;&quot;&quot;
+        Test results for various URLs
+        &quot;&quot;&quot;
+        transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
+        # URL is None
+        with pytest.raises(Exception):
+            url = None
+            transport_proxy.get_all_info(url)
+    
+        # URL is Gibberish
+        with pytest.raises(Exception):
+            url = &apos;52086gfdgfd86534&apos;
+            transport_proxy.get_all_info(url)
+    
+        # URL is non-related to Yandex
+        with pytest.raises(Exception):
+            url = &apos;https://www.random.org/&apos;
+            transport_proxy.get_all_info(url)
+    
+        # Stop in Yakutsk with ABSOLUTELY NO DATA!
+        with pytest.raises(Exception):
+            # Школа № 7
+            url = &apos;https://yandex.ru/maps/74/yakutsk/?ll=129.727044%2C62.035905&amp;mode=search&amp;oid=30026276041&amp;ol=biz&amp;sctx=ZAAAAAgBEAAaKAoSCb7vKUoTOGBAEa%2BE5iHwB09AEhIJk7wDAKCnkj8Rve5xSS9ndT8iBAABAgQoCjAAONam08rmoLGVgwFASkgBVc3MzD5YAGISZGlyZWN0X3BhZ2VfaWQ9MjQyYiNyZWxldl9yYW5raW5nX21zZV9mb3JtdWxhPWZtbDQyMDU1NWIocmVsZXZfcmFua2luZ19oZWF2eV9mb3JtdWxhPWwzX2ZtbDQyNTE4MGI2cmVhcnI9c2NoZW1lX0xvY2FsL0dlby9Qb3N0ZmlsdGVyL0Fic0Zvcm11bGE9Zm1sNDIwNjYzagJydXAAnQHNzMw9oAEAqAEA&amp;sll=129.727044%2C62.035905&amp;sspn=0.009109%2C0.002615&amp;text=%D1%88%D0%BA%D0%BE%D0%BB%D0%B0%20%E2%84%967&amp;z=17&apos;
+&gt;           transport_proxy.get_all_info(url)
+E           Failed: DID NOT RAISE &lt;class &apos;Exception&apos;&gt;
+
+tests/test_yandex_transport_proxy.py:206: Failed</failure></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="209" name="test_count_vehicles_on_route_no_data" time="0.001"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="217" name="test_count_vehicles_on_route_saved_data" time="0.001"></testcase><testcase classname="tests.test_yandex_transport_proxy" file="tests/test_yandex_transport_proxy.py" line="226" name="test_count_vehicles_on_route_live_data" time="6.415"></testcase></testsuite>

@@ -199,11 +199,9 @@ def test_get_all_info_input():
         url = 'https://www.random.org/'
         transport_proxy.get_all_info(url)
 
-    # Stop in Yakutsk with ABSOLUTELY NO DATA!
-    with pytest.raises(Exception):
-        # Школа № 7
-        url = 'https://yandex.ru/maps/74/yakutsk/?ll=129.727044%2C62.035905&mode=search&oid=30026276041&ol=biz&sctx=ZAAAAAgBEAAaKAoSCb7vKUoTOGBAEa%2BE5iHwB09AEhIJk7wDAKCnkj8Rve5xSS9ndT8iBAABAgQoCjAAONam08rmoLGVgwFASkgBVc3MzD5YAGISZGlyZWN0X3BhZ2VfaWQ9MjQyYiNyZWxldl9yYW5raW5nX21zZV9mb3JtdWxhPWZtbDQyMDU1NWIocmVsZXZfcmFua2luZ19oZWF2eV9mb3JtdWxhPWwzX2ZtbDQyNTE4MGI2cmVhcnI9c2NoZW1lX0xvY2FsL0dlby9Qb3N0ZmlsdGVyL0Fic0Zvcm11bGE9Zm1sNDIwNjYzagJydXAAnQHNzMw9oAEAqAEA&sll=129.727044%2C62.035905&sspn=0.009109%2C0.002615&text=%D1%88%D0%BA%D0%BE%D0%BB%D0%B0%20%E2%84%967&z=17'
-        transport_proxy.get_all_info(url)
+    # NOTE: Stop in Yakutsk (Школа №7) now returns getLayerRegions method
+    #       Last test is removed from here, it wasn't meant to be here anyway.
+
     wait_random_time()
 
 # --------------------------------------------- count_vehicles_on_route ------------------------------------------------- #
