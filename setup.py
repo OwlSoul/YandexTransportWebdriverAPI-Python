@@ -19,7 +19,7 @@ setup(
   # Provide either the link to your github or to your website
   url = 'https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python',
   # I explain this later on
-    download_url = 'https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/archive/0.0.3-alpha.tar.gz',
+    download_url = 'https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/archive/0.0.4-alpha.tar.gz',
   # Keywords that define your package best
   keywords = ['Yandex', 'Transport', 'Masstransit', 'WebDriver'],
   # I get to this in a second
