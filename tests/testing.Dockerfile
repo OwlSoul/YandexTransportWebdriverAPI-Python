@@ -26,7 +26,10 @@ RUN apt-get update && \
 
 # Install pytest
 RUN pip3 install pytest \
-                 pytest-progress
+                 pytest-progress \
+                 pytest-rerunfailures \
+                 pytest-timeout
+
 
 # Dealing with goddamn locales
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \

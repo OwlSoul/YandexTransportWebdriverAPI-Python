@@ -27,7 +27,7 @@ def test_initial():
     """Most basic test.py to ensure pytest DEFINITELY works"""
     assert True == True
 
-
+@pytest.mark.timeout(120)
 def test_connection_refused():
     """
     Try to connect to server which will definitely refuse a connection
@@ -37,7 +37,7 @@ def test_connection_refused():
     sock, error = transport_proxy._connect()
     assert (sock is None) and (error == "[Errno 111] Connection refused")
 
-
+@pytest.mark.timeout(120)
 def test_connection_no_route():
     """
     Try to connect to server to which no route exists
@@ -47,7 +47,7 @@ def test_connection_no_route():
     sock, error = transport_proxy._connect()
     assert (sock is None) and (error == "[Errno 113] No route to host")
 
-
+@pytest.mark.timeout(120)
 def test_connection_to_working_server():
     """
     Try to connect to a working server
@@ -57,7 +57,7 @@ def test_connection_to_working_server():
     sock, error = transport_proxy._connect()
     assert (sock is not None) and (error == "OK")
 
-
+@pytest.mark.timeout(120)
 def test_echo_response():
     """
     Test echo response, it should return the same data being sent
@@ -67,6 +67,7 @@ def test_echo_response():
     assert data == 'Test-Message-1234'
 
 # ---------------------------------------------     get_stop_info     -------------------------------------------------- #
+@pytest.mark.timeout(120)
 def test_get_stop_info_input():
     """
     Test results for various URLs
@@ -95,6 +96,7 @@ def test_get_stop_info_input():
     wait_random_time()
 
 # ---------------------------------------------     get_route_info     ------------------------------------------------- #
+@pytest.mark.timeout(120)
 def test_get_route_info_input():
     """
     Test results for various URLs
@@ -123,6 +125,7 @@ def test_get_route_info_input():
     wait_random_time()
 
 # ---------------------------------------------     get_vehicles_info     ---------------------------------------------- #
+@pytest.mark.timeout(120)
 def test_get_vehicles_info_input():
     """
     Test results for various URLs
@@ -150,7 +153,8 @@ def test_get_vehicles_info_input():
         transport_proxy.get_vehicles_info(url)
     wait_random_time()
 
-# -----------------------------------------     get_vehicles_info_with_region     ---------------------------------------- #
+# -----------------------------------------     get_vehicles_info_with_region     ------------------------------------ #
+@pytest.mark.timeout(120)
 def test_get_vehicles_info_with_region_input():
     """
     Test results for various URLs
@@ -178,7 +182,8 @@ def test_get_vehicles_info_with_region_input():
         transport_proxy.get_vehicles_info_with_region(url)
     wait_random_time()
 
-# --------------------------------------------     get_all_info     ---------------------------------------------------- #
+# --------------------------------------------     get_all_info     -------------------------------------------------- #
+@pytest.mark.timeout(120)
 def test_get_all_info_input():
     """
     Test results for various URLs
@@ -204,7 +209,8 @@ def test_get_all_info_input():
 
     wait_random_time()
 
-# --------------------------------------------- count_vehicles_on_route ------------------------------------------------- #
+# --------------------------------------------- count_vehicles_on_route ---------------------------------------------- #
+@pytest.mark.timeout(120)
 def test_count_vehicles_on_route_no_data():
     """
     Count vehicles with no data provided, should return None
@@ -213,6 +219,7 @@ def test_count_vehicles_on_route_no_data():
     result = transport_proxy.count_vehicles_on_route(None)
     assert result is None
 
+@pytest.mark.timeout(120)
 def test_count_vehicles_on_route_saved_data():
     """
     Count vehicles on route from test.py data, 8 buses on route.
@@ -222,6 +229,7 @@ def test_count_vehicles_on_route_saved_data():
     result = YandexTransportProxy.count_vehicles_on_route(data, with_region=False)
     assert result == 8
 
+@pytest.mark.timeout(120)
 def test_count_vehicles_on_route_live_data():
     """
     TODO: This is an Integration Test move it somewhere later.

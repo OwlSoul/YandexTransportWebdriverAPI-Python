@@ -5,5 +5,6 @@ python3 -m pytest \
 --color=no \
 --junitxml tests_results.xml \
 --show-progress \
+--reruns 2 \
 --show-capture=all
 
