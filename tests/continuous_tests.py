@@ -81,7 +81,7 @@ def wait_random_time():
     time.sleep(value)
 
 # -----                                        DATA COLLECTION                                                   ----- #
-do_data_collection = False
+do_data_collection = True
 def perform_data_collection():
     """
     Data collection test, every single request should return valid JSON object.

@@ -1,4 +1,7 @@
 .idea
 __pycache__
 test_results.xml
+tests_results.xml
+tests_results_continuous.xml
 dist
+test-data.json
