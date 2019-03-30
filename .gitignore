@@ -2,3 +2,4 @@
 __pycache__
 test_data.json
 test_results.xml
+dist

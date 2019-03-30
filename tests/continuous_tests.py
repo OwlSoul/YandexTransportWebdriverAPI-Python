@@ -15,7 +15,7 @@ import json
 from yandex_transport_webdriver_api import YandexTransportProxy
 
 # Working server settings
-SERVER_HOST = '127.0.0.1'
+SERVER_HOST = '172.17.0.1'
 SERVER_PORT = 25555
 
 # Station URLs used in tests.

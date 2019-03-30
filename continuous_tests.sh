@@ -4,7 +4,7 @@ python3 -m pytest \
 -vv \
 -s \
 --color=no \
---junitxml continuous_tests_results.xml \
+--junitxml tests_results_continuous.xml \
 --show-progress \
 --show-capture=all \
 tests/continuous_tests.py
