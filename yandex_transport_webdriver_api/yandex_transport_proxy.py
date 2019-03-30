@@ -13,7 +13,7 @@ from terminal station).
 __author__ = "Yury D."
 __credits__ = ["Yury D.", "Pavel Lutskov", "Yury Alexeev"]
 __license__ = "MIT"
-__version__ = "0.0.4-alpha"
+__version__ = "0.0.5-alpha"
 __maintainer__ = "Yury D."
 __email__ = "SoulGate@yandex.ru"
 __status__ = "Beta"
