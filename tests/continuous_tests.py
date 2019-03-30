@@ -122,7 +122,7 @@ def perform_data_collection():
                 print("[FAILED]")
                 print("Exception: ",str(e))
             f = open('station_' + station.replace('/', '-') + '.json', 'w', encoding='utf-8')
-            f.write(result)
+            f.write(json.dumps(result, ensure_ascii=False, indent=4, separators=(',', ': ')))
             f.close()
             wait_random_time()
 
