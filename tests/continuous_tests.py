@@ -82,6 +82,8 @@ def wait_random_time():
 
 # -----                                        DATA COLLECTION                                                   ----- #
 do_data_collection = True
+do_stations_collection = True
+do_routes_collection = True
 def perform_data_collection():
     """
     Data collection test, every single request should return valid JSON object.
@@ -98,47 +100,57 @@ def perform_data_collection():
     print()
 
     proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
-    for station, url in station_urls.items():
-        print("Collecting station: " + station + "... ", end='')
-        try:
-            result = proxy.get_all_info(url)
-            for entry in result:
-                query_results.append({"success": True,
+    if do_stations_collection:
+        for station, url in station_urls.items():
+            print("Collecting station: " + station + "... ", end='')
+            result=''
+            try:
+                result = proxy.get_all_info(url)
+                for entry in result:
+                    query_results.append({"success": True,
+                                          "station": station,
+                                          "url": url,
+                                          "method": entry['method'],
+                                          "data": entry['data']})
+                    print(entry['method'], end=' ')
+                print("[OK]")
+            except Exception as e:
+                query_results.append({"success": False,
                                       "station": station,
-                                      "url": url,
-                                      "method": entry['method'],
-                                      "data": entry['data']})
-                print(entry['method'], end=' ')
-            print("[OK]")
-        except Exception as e:
-            query_results.append({"success": False,
-                                  "station": station,
-                                  "url": url}
-                                 )
-            print("[FAILED]")
-            print(str(e))
-        wait_random_time()
+                                      "url": url}
+                                     )
+                print("[FAILED]")
+                print("Exception: ",str(e))
+            f = open('station_' + station.replace('/', '-') + '.json', 'w', encoding='utf-8')
+            f.write(result)
+            f.close()
+            wait_random_time()
 
-    for route, url in routes_urls.items():
-        print("Collecting route: " + route + "... ", end='')
-        try:
-            result = proxy.get_all_info(url)
-            for entry in result:
-                query_results.append({"success": True,
+    if do_routes_collection:
+        for route, url in routes_urls.items():
+            print("Collecting route: " + route + "... ", end='')
+            result = ''
+            try:
+                result = proxy.get_all_info(url)
+                for entry in result:
+                    query_results.append({"success": True,
+                                          "route": route,
+                                          "url": url,
+                                          "method": entry['method'],
+                                          "data": entry['data']})
+                    print(entry['method'], end=' ')
+                print("[OK]")
+            except Exception as e:
+                query_results.append({"success": False,
                                       "route": route,
-                                      "url": url,
-                                      "method": entry['method'],
-                                      "data": entry['data']})
-                print(entry['method'], end=' ')
-            print("[OK]")
-        except Exception as e:
-            query_results.append({"success": False,
-                                  "route": route,
-                                  "url": url
-                                  })
-            print("[FAILED]")
-            print(str(e))
-        wait_random_time()
+                                      "url": url
+                                      })
+                print("[FAILED]")
+                print("Exception: ", str(e))
+            f = open('testdata/output/route_' + route.replace('/', '-') + '.json', 'w', encoding='utf-8')
+            f.write(json.dumps(result, ensure_ascii=False, indent=4, separators=(',', ': ')))
+            f.close()
+            wait_random_time()
 
     # Saving data to files
     f = open('test_data.json', 'w', encoding='utf-8')
