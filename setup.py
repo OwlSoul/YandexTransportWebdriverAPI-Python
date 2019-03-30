@@ -1,9 +1,9 @@
 from distutils.core import setup
 setup(
   # How you named your package folder
-  name = 'YandexTransportWebdriverAPI',
+  name = 'yandex_transport_webdriver_api',
   # Chose the same as "name"
-  packages = ['YandexTransportWebdriverAPI'],
+  packages = ['yandex_transport_webdriver_api'],
   # Start with a small number and increase it with every change you make
   version = '1.0.0',
   # Chose a license from here: https://help.github.com/articles/licensing-a-repository

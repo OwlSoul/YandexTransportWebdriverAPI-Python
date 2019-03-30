@@ -177,11 +177,13 @@ def prepare_data():
     load_data_from_file()
 
 # -----                                          TESTS                                                           ----- #
+@pytest.mark.timeout(3600)
 def test_data_load_stage():
     """Needed to call perform_data_collection and load_data_from_file functions"""
     print()
     assert True == True
 
+@pytest.mark.timeout(120)
 def test_initial():
     """Most basic test.py to ensure pytest DEFINITELY works"""
     assert True == True
