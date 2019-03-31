@@ -82,7 +82,7 @@ def wait_random_time():
 
 # -----                                        DATA COLLECTION                                                   ----- #
 do_data_collection = True
-do_stations_collection = False
+do_stations_collection = True
 do_routes_collection = True
 
 data_collection_passed = False

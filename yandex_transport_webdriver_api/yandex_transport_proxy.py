@@ -56,6 +56,10 @@ class YandexTransportProxy:
 
         self.log = Logger(Logger.NONE)
 
+        # Log buffer messages to a file
+        self.log_buffer = True
+        self.log_buffer_file = 'ytapi-wd-python.log'
+
     def callback_function_example(self, data):
         """
         Example of Callback function. This will be called each time complete JSON arrives fo
@@ -98,21 +102,26 @@ class YandexTransportProxy:
         sock.sendall(bytes(command, 'utf-8'))
         completed = False
         buffer = ''
-        complete_response = ''
-        buffers_res = []
         while not completed:
             # Receive data from the server
             data = sock.recv(self.buffer_size)
 
             response = bytes(data).decode('utf-8')
-            complete_response = complete_response + response
+
             for c in response:
                 if c == '\0':
-                    buffers_res.append(buffer)
+                    # Logging messages to a buffer file if asked to
+                    # This is a workaround measure against Issue #1
+                    if self.log_buffer:
+                        f = open(self.log_buffer_file, 'a', encoding='utf-8')
+                        f.write(buffer)
+                        f.write('\n')
+                        f.close()
                     try:
                         json_data = json.loads(buffer, encoding='utf-8')
                     except Exception as e:
-                        # TODO: Temporary solution, print broken json
+                        # TODO: Temporary solution, print broken json, consider creating debug log for ALL
+                        #       received buffer messages.
                         print()
                         print()
                         print(buffer)

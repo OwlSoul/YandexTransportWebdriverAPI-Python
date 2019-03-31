@@ -47,6 +47,7 @@ RUN apt-get clean
 
 # Creating the user
 RUN mkdir -p /home/transport_api
+RUN mkdir -p /home/transport_api/testdata/output
 RUN useradd transport_api --home /home/transport_api --shell /bin/bash
 
 # Copying project
@@ -55,7 +56,6 @@ ADD yandex_transport_webdriver_api/* /home/transport_api/yandex_transport_webdri
 # Copying tests
 ADD tests/* /home/transport_api/tests/
 ADD testdata/* /home/transport_api/testdata/
-ADD testdata/output /home/transport_api/testdata/output
 ADD execute_tests.sh /home/transport_api
 ADD continuous_tests.sh /home/transport_api
 
