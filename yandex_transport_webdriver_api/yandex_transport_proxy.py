@@ -103,7 +103,10 @@ class YandexTransportProxy:
             response = bytes(data).decode('utf-8')
             for c in response:
                 if c == '\0':
-                    json_data = json.loads(buffer)
+                    try:
+                        json_data = json.loads(buffer, encoding='utf-8')
+                    except Exception as e:
+                        raise Exception("Exception (_single_query_blocking) : JSON loads : "+str(e))
                     buffer = ''
                     # Executing callback if asked to
                     if callback is not None:
