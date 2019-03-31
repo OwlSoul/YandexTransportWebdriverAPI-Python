@@ -82,8 +82,10 @@ def wait_random_time():
 
 # -----                                        DATA COLLECTION                                                   ----- #
 do_data_collection = True
-do_stations_collection = True
+do_stations_collection = False
 do_routes_collection = True
+
+data_collection_passed = False
 def perform_data_collection():
     """
     Data collection test, every single request should return valid JSON object.
@@ -94,7 +96,16 @@ def perform_data_collection():
     """
     global query_results
 
+    global do_data_collection
+    global do_stations_collection
+    global do_routes_collection
+
+    global data_collection_passed
+
     if not do_data_collection:
+        return
+
+    if data_collection_passed:
         return
 
     print()
@@ -117,12 +128,18 @@ def perform_data_collection():
             except Exception as e:
                 query_results.append({"success": False,
                                       "station": station,
-                                      "url": url}
+                                      "url": url,
+                                      "method": "getAllInfo (failed)",
+                                      "data": ""
+                                      }
                                      )
                 print("[FAILED]")
                 print("Exception (station): ",str(e))
-            f = open('station_' + station.replace('/', '-') + '.json', 'w', encoding='utf-8')
+            f = open('testdata/output/station_' + station.replace('/', '-') + '.json.pretty', 'w', encoding='utf-8')
             f.write(json.dumps(result, ensure_ascii=False, indent=4, separators=(',', ': ')))
+            f.close()
+            f = open('testdata/output/station_' + station.replace('/', '-') + '.json', 'w', encoding='utf-8')
+            f.write(json.dumps(result, ensure_ascii=False))
             f.close()
             wait_random_time()
 
@@ -143,12 +160,17 @@ def perform_data_collection():
             except Exception as e:
                 query_results.append({"success": False,
                                       "route": route,
-                                      "url": url
+                                      "url": url,
+                                      "method": "getAllInfo (failed)",
+                                      "data": ""
                                       })
                 print("[FAILED]")
                 print("Exception (route): ", str(e))
-            f = open('route_' + route.replace('/', '-') + '.json', 'w', encoding='utf-8')
+            f = open('testdata/output/route_' + route.replace('/', '-') + '.json.pretty', 'w', encoding='utf-8')
             f.write(json.dumps(result, ensure_ascii=False, indent=4, separators=(',', ': ')))
+            f.close()
+            f = open('testdata/output/route_' + route.replace('/', '-') + '.json', 'w', encoding='utf-8')
+            f.write(json.dumps(result, ensure_ascii=False))
             f.close()
             wait_random_time()
 
@@ -156,6 +178,9 @@ def perform_data_collection():
     f = open('test_data.json', 'w', encoding='utf-8')
     f.write(json.dumps(query_results, ensure_ascii=False))
     f.close()
+
+    # Setting "data collection passed" flag.
+    data_collection_passed = True
 
     # Basically, always succeeds
     assert True == True

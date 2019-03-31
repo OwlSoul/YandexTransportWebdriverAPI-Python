@@ -45,6 +45,8 @@ class YandexTransportProxy:
     RESULT_NO_DATA = 1
     RESULT_GET_ERROR = 2
     RESULT_NO_YANDEX_DATA = 3
+    RESULT_JSON_LOADS_ERROR = 10
+    RESULT_JSON_HAS_ERROR = 11
 
     def __init__(self, host, port):
         self.host = host
@@ -88,7 +90,7 @@ class YandexTransportProxy:
         :param command: command to execute
         :param callback: if not None, will function be called each time JSON arrives
                          Function format: def callback(data)
-        :return: array of dictionaries containing: method, received data
+        :return: array of dictionaries containing: {method, received data},
         """
         result = []
 
@@ -96,16 +98,27 @@ class YandexTransportProxy:
         sock.sendall(bytes(command, 'utf-8'))
         completed = False
         buffer = ''
+        complete_response = ''
+        buffers_res = []
         while not completed:
             # Receive data from the server
             data = sock.recv(self.buffer_size)
 
             response = bytes(data).decode('utf-8')
+            complete_response = complete_response + response
             for c in response:
                 if c == '\0':
+                    buffers_res.append(buffer)
                     try:
                         json_data = json.loads(buffer, encoding='utf-8')
                     except Exception as e:
+                        # TODO: Temporary solution, print broken json
+                        print()
+                        print()
+                        print(buffer)
+                        print()
+                        print()
+                        # Raise an exception, this might be problematic.
                         raise Exception("Exception (_single_query_blocking) : JSON loads : "+str(e))
                     buffer = ''
                     # Executing callback if asked to
@@ -116,7 +129,9 @@ class YandexTransportProxy:
                     # Check if errors occurred
                     if 'error' in json_data:
                         if json_data['error'] != self.RESULT_OK:
-                            raise Exception('Server error: ' + json_data['message'])
+                            #return result, self.RESULT_JSON_HAS_ERROR, buffer
+                            raise Exception("Exception(_single_query_blocking): "
+                                            "Yandex Transport Proxy Server signalled an error: " + json_data['message'])
 
                     # Check if expect_more_data is present and is false
                     if 'expect_more_data' in json_data:
@@ -194,7 +209,7 @@ class YandexTransportProxy:
             # This might take a while, will block
             if timeout > 0:
                 sock.settimeout(timeout)
-            result = self._single_query_blocking(sock, command)
+            result= self._single_query_blocking(sock, command)
             self._disconnect(sock)
         else:
             # This will return immediately, will not block
