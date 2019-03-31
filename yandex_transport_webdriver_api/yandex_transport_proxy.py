@@ -177,7 +177,7 @@ class YandexTransportProxy:
         sock, error = self._connect()
 
         if sock is None:
-            raise Exception("Failed to connect to server,"
+            raise Exception("Exception (_execure_get_query): Failed to connect to server,"
                             " host = " + str(self.host) + "," +
                             " post = " + str(self.port))
 
@@ -203,7 +203,7 @@ class YandexTransportProxy:
         if blocking:
             if result:                              # if len(result) > 0
                 return result
-            raise Exception("No data is received")  # if len(result) == 0
+            raise Exception("Exception (_execute_get_query): No data is received")  # if len(result) == 0
 
         return None
 
