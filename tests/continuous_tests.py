@@ -120,7 +120,7 @@ def perform_data_collection():
                                       "url": url}
                                      )
                 print("[FAILED]")
-                print("Exception: ",str(e))
+                print("Exception (station): ",str(e))
             f = open('station_' + station.replace('/', '-') + '.json', 'w', encoding='utf-8')
             f.write(json.dumps(result, ensure_ascii=False, indent=4, separators=(',', ': ')))
             f.close()
@@ -146,8 +146,8 @@ def perform_data_collection():
                                       "url": url
                                       })
                 print("[FAILED]")
-                print("Exception: ", str(e))
-            f = open('testdata/output/route_' + route.replace('/', '-') + '.json', 'w', encoding='utf-8')
+                print("Exception (route): ", str(e))
+            f = open('route_' + route.replace('/', '-') + '.json', 'w', encoding='utf-8')
             f.write(json.dumps(result, ensure_ascii=False, indent=4, separators=(',', ': ')))
             f.close()
             wait_random_time()
