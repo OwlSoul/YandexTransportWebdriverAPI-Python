@@ -111,7 +111,8 @@ class YandexTransportProxy:
             for c in response:
                 if c == '\0':
                     # Logging messages to a buffer file if asked to
-                    # This is a workaround measure against Issue #1
+                    # This is a workaround measure against
+                    # Issue #1: JSON Parsing Error for Vehicle Data Collection
                     if self.log_buffer:
                         f = open(self.log_buffer_file, 'a', encoding='utf-8')
                         f.write(buffer)
@@ -120,13 +121,6 @@ class YandexTransportProxy:
                     try:
                         json_data = json.loads(buffer, encoding='utf-8')
                     except Exception as e:
-                        # TODO: Temporary solution, print broken json, consider creating debug log for ALL
-                        #       received buffer messages.
-                        print()
-                        print()
-                        print(buffer)
-                        print()
-                        print()
                         # Raise an exception, this might be problematic.
                         raise Exception("Exception (_single_query_blocking) : JSON loads : "+str(e))
                     buffer = ''

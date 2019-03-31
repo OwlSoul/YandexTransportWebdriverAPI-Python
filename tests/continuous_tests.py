@@ -285,18 +285,20 @@ def test_encountered_methods():
               'getRouteInfo': 0,
               'getVehiclesInfo': 0,
               'getVehiclesInfoWithRegion': 0,
-              'getLayerRegions': 0}
+              'getLayerRegions': 0,
+              'getAllInfo (failed)': 0}
     for entry in json_data:
         result[entry['method']] += 1
 
     for key, value in result.items():
         print(key, ':', value)
 
-    assert result['getStopInfo'] > 0 and \
-           result['getVehiclesInfo'] > 0 and \
-           result['getLayerRegions'] > 0 and \
-           result['getRouteInfo'] > 0 and \
-           result['getVehiclesInfoWithRegion'] > 0
+    assert result['getStopInfo'] > 0
+    assert result['getVehiclesInfo'] > 0
+    assert result['getLayerRegions'] > 0
+    assert result['getRouteInfo'] > 0
+    assert result['getVehiclesInfoWithRegion'] > 0
+    assert result['getAllInfo (failed)'] == 0
 
 def test_no_data_returned():
     """
