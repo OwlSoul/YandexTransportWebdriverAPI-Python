@@ -7,3 +7,4 @@ dist
 test-data.json
 testdata/output/*
 ytapi-wd-python.log
+results
