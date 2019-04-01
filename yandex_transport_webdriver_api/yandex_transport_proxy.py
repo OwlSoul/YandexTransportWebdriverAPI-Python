@@ -126,6 +126,7 @@ class YandexTransportProxy:
                             f.write("! FAILED !\n")
                             f.write('\n')
                             f.close()
+                        sock.close()
                         raise Exception("Exception (_single_query_blocking) : JSON loads : "+str(e))
                     if self.log_buffer:
                         f.write("! SUCCESS !\n")
