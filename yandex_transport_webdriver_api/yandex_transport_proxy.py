@@ -115,7 +115,7 @@ class YandexTransportProxy:
                     # Issue #1: JSON Parsing Error for Vehicle Data Collection
                     if self.log_buffer:
                         f = open(self.log_buffer_file, 'a', encoding='utf-8')
-                        f.write("Buffer length: " + str(buffer))
+                        f.write("Buffer length: " + len(buffer))
                         f.write(buffer)
                     try:
                         json_data = json.loads(buffer, encoding='utf-8')
