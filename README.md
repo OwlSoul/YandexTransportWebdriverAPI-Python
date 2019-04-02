@@ -6,6 +6,8 @@ A "sort of API" to access Yandex Transport/Masstransit data, designed to work in
 
 *This project is for "Yandex.Maps" and "Yandex.Transport" services, so it's expected that majority of potential users are from Russian Federation, thus the README is written in russian language.*
 
+![Yandex Transport Proxy Logo](https://raw.githubusercontent.com/OwlSoul/Images/master/YandexTransportProxy/yandex_transport_logo_python.jpg)
+
 ## Предназначение проекта
 
 Данное "API" позволяет автоматизировать получение данных от Яндекс.Транспорт Masstransit API (закрытого на данный момент для сторонних пользователей). Получить данные вроде "покажи координаты всего общественного транспорта в таком-то районе" или "выдай мне данные о координатах транспорта по всему городу в данный момент" с помощью этой штуковины просто так нельзя. Зато с ее помощью можно автоматизировать получение данных  по конкретной остановке, или по конкретному маршруту, и получить их именно в том формате в котором Яндекс их пересылает - здоровенные такие JSON-структуры (до 150 килобайт и больше). 
@@ -16,13 +18,13 @@ A "sort of API" to access Yandex Transport/Masstransit data, designed to work in
 
 У каждой остановки или маршрута в Яндекс.Картах есть свой URL, узнать его просто, достаточно просто нажать на интересующую остановку/маршрут и посмотреть что будет в адресной строке.
 
-### Примеры:
+### Примеры URL:
 
 ----
 
 **Остановка "Метро Бауманская", Москва**:
 
-https://yandex.ru/maps/213/moscow/?ll=37.678708%2C55.772438&masstransit%5BstopId%5D=stop__9643291&mode=stop&z=19
+https://yandex.ru/maps/213/moscow/?ll=37.678708,55.772438&masstransit[stopId]=stop__9643291&mode=stop&z=19
 
 Здесь самая важная часть - "*masstransit[stopId]=stop__9643291*". Это ID нашей остановки, в целом достаточно только его, ссылка https://yandex.ru/maps/213/moscow/?masstransit[stopId]=stop__9643291 точно также будет работать в браузере.
 
@@ -30,7 +32,7 @@ https://yandex.ru/maps/213/moscow/?ll=37.678708%2C55.772438&masstransit%5BstopId
 
 **Маршрут "Трамвай Б", Москва**:
 
-https://yandex.ru/maps/213/moscow/?ll=37.679549%2C55.772203&masstransit%5BrouteId%5D=B_tramway_default&masstransit%5BstopId%5D=stop__9643291&masstransit%5BthreadId%5D=BA_tramway_default&mode=stop&z=18
+https://yandex.ru/maps/213/moscow/?ll=37.679549,55.772203&masstransit[routeId]=B_tramway_default&masstransit[stopId]=stop__9643291&masstransit[threadId]=BA_tramway_default&mode=stop&z=18
 
 Здесь важная часть - *"masstransit[routeId]=B_tramway_default"*, и ссылка https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default точно так же будет работать в браузере.
 
@@ -73,7 +75,7 @@ pip3 install yandex-transport-webdriver-api
 
 Не забывайте, что для работы нужен запущенный и доступный по сети сервер [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy), хотя бы один (а можно и Kubernetes кластер из них сгородить).
 
-## Реализованые функции
+## Реализованные функции
 Функции для получения информации от Яндекс.Транспорта могут работать как в блокирующем (синхронном), так и в неблокирующем (асинхронном) режимах.
 
 Функции данного API имеют общую структуру, виде get_something(params, query_id=None, blocking=True, timeout=0, callback=None)
@@ -386,7 +388,7 @@ https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/issues/new
 
 The code is distributed under MIT licence, AS IS, author do not bear any responsibility for possible problems with usage of this project (but he will be very sad).
 
-## Титры / Credits
+## Зал славы / Credits
 __Project author:__ [Yury D.](https://github.com/OwlSoul) (TheOwlSoul@gmail.com) \
 __PEP-8 Evangelist, Good Cop:__ [Pavel Lutskov](https://github.com/ltskv) \
 __PEP-8 Evangelist, Bad Cop:__ [Yury Alexeev](https://github.com/Kuma-San0217)
