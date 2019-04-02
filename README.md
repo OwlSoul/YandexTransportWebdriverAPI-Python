@@ -50,9 +50,9 @@ result_json = proxy.getStopInfo(stop_url)
 ```
 # Получение информации о маршруте и транспорте, прокси-сервер находится по адресу 127.0.0.1:25555
 proxy = YandexTransportProxy('127.0.0.1', 25555)
-stop_url = https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default
-result_json_route = proxy.getRouteInfo(stop_url)
-result_json_vehicles = proxy.getVehiclesInfo(stop_url)
+route_url = https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default
+result_json_route = proxy.getRouteInfo(route_url)
+result_json_vehicles = proxy.getVehiclesInfo(route_url)
 ```
 
 Результатом подобных запросов будут как раз те самые данные в формате JSON, приходящие от Yandex Transport/Masstransit API. Примеры таких ответов можно посмотреть в [YandexTransportProxy wiki](https://github.com/OwlSoul/YandexTransportProxy/wiki).
