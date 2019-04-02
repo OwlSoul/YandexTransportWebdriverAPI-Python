@@ -75,7 +75,7 @@ pip3 install yandex-transport-webdriver-api
 
 Не забывайте, что для работы нужен запущенный и доступный по сети сервер [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy), хотя бы один (а можно и Kubernetes кластер из них сгородить).
 
-## Реализованые функции
+## Реализованные функции
 Функции для получения информации от Яндекс.Транспорта могут работать как в блокирующем (синхронном), так и в неблокирующем (асинхронном) режимах.
 
 Функции данного API имеют общую структуру, виде get_something(params, query_id=None, blocking=True, timeout=0, callback=None)
