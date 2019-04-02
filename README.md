@@ -24,7 +24,7 @@ A "sort of API" to access Yandex Transport/Masstransit data, designed to work in
 
 **Остановка "Метро Бауманская", Москва**:
 
-https://yandex.ru/maps/213/moscow/?ll=37.678708%2C55.772438&masstransit%5BstopId%5D=stop__9643291&mode=stop&z=19
+https://yandex.ru/maps/213/moscow/?ll=37.678708,55.772438&masstransit[stopId]=stop__9643291&mode=stop&z=19
 
 Здесь самая важная часть - "*masstransit[stopId]=stop__9643291*". Это ID нашей остановки, в целом достаточно только его, ссылка https://yandex.ru/maps/213/moscow/?masstransit[stopId]=stop__9643291 точно также будет работать в браузере.
 
@@ -32,7 +32,7 @@ https://yandex.ru/maps/213/moscow/?ll=37.678708%2C55.772438&masstransit%5BstopId
 
 **Маршрут "Трамвай Б", Москва**:
 
-https://yandex.ru/maps/213/moscow/?ll=37.679549%2C55.772203&masstransit%5BrouteId%5D=B_tramway_default&masstransit%5BstopId%5D=stop__9643291&masstransit%5BthreadId%5D=BA_tramway_default&mode=stop&z=18
+https://yandex.ru/maps/213/moscow/?ll=37.679549,55.772203&masstransit[routeId]=B_tramway_default&masstransit[stopId]=stop__9643291&masstransit[threadId]=BA_tramway_default&mode=stop&z=18
 
 Здесь важная часть - *"masstransit[routeId]=B_tramway_default"*, и ссылка https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default точно так же будет работать в браузере.
 
