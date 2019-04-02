@@ -159,7 +159,7 @@ Received {'id': 'ID001', 'method': 'getEcho', 'error': 0, 'message': 'OK', 'expe
 ### get_stop_info (внутренняя команда - getStopInfo, функция Masstransit API - getStopInfo)
 ```get_stop_info(url, query_id=None, blocking=True, timeout=0, callback=None):```
 
-Тестовая функция, помещает команду ```getEcho``` в очередь YandexTransportProxy, и возвращает переданную строку (text) при выполнении. Остальные функции построены по такому же принципу (особено в той части которая касается асинхронного режима).
+Получение информации об остановке по URL.
 
 Параметры:
 * **url** - url остановки.
@@ -217,6 +217,90 @@ Async function terminated!
 Stop coordinates:  [37.678450655, 55.772332049]
 ```
 ----
+
+### get_route_info (внутренняя команда - getRouteInfo, функция Masstransit API - getRouteInfo)
+```get_route_info(url, query_id=None, blocking=True, timeout=0, callback=None):```
+
+Получение информации омаршруте по URL.
+
+Параметры:
+* **url** - url остановки.
+* **query_id** - см. общие параметры для всех функций.
+* **blocking** - см. общие параметры для всех функций.
+* **timeout** - см. общие параметры для всех функций.
+* **callback** - см. общие параметры для всех функций.
+
+Пример использования, синхронный режим :
+
+```
+import json
+from yandex_transport_webdriver_api import YandexTransportProxy
+
+# Прокси-сервер находится на 172.17.0.1:25555
+proxy = YandexTransportProxy('172.17.0.1', 25555)
+url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_de$
+result = proxy.get_route_info(url)
+# Вытаскиваем назвение первой остановки на маршруте
+stop_name = result['data']['features'][0]['features'][0]['properties']['name']
+print("1st stop: ", stop_name)
+```
+
+Результат:
+```
+1st stop:  Курский вокзал
+```
+----
+
+### get_vehicles_info (внутренняя команда - getVehiclesInfo, функция Masstransit API - getVehiclesInfo)
+```get_vehicles_info(url, query_id=None, blocking=True, timeout=0, callback=None):```
+
+Получение информации о транспорте на маршруте по URL.
+
+Параметры:
+* **url** - url остановки.
+* **query_id** - см. общие параметры для всех функций.
+* **blocking** - см. общие параметры для всех функций.
+* **timeout** - см. общие параметры для всех функций.
+* **callback** - см. общие параметры для всех функций.
+
+Пример использования, синхронный режим :
+
+```
+import json
+from yandex_transport_webdriver_api import YandexTransportProxy
+
+# Прокси-сервер находится на 172.17.0.1:25555
+proxy = YandexTransportProxy('172.17.0.1', 25555)
+url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_de$
+result = proxy.get_vehicles_info(url)
+```
+----
+
+### get_vehicles_info_with_region (внутренняя команда - getVehiclesInfoWithRegion, функция Masstransit API - getVehiclesInfoWithRegion)
+```get_vehicles_info(url, query_id=None, blocking=True, timeout=0, callback=None):```
+
+Получение информации о транспорте на маршруте по URL, с дополнительной информацией о регионе. Возможно скоро полностью сменит предыдущий метод.
+
+Параметры:
+* **url** - url остановки.
+* **query_id** - см. общие параметры для всех функций.
+* **blocking** - см. общие параметры для всех функций.
+* **timeout** - см. общие параметры для всех функций.
+* **callback** - см. общие параметры для всех функций.
+
+Пример использования, синхронный режим :
+
+```
+import json
+from yandex_transport_webdriver_api import YandexTransportProxy
+
+# Прокси-сервер находится на 172.17.0.1:25555
+proxy = YandexTransportProxy('172.17.0.1', 25555)
+url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_de$
+result = proxy.get_vehicles_info_with_region(url)
+```
+----
+
 
 
 ## Обратная связь
