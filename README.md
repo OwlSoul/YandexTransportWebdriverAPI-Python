@@ -183,7 +183,7 @@ coords = result['data']['geometries'][0]['coordinates']
 print("Stop coordinates: ", coords)
 ```
 
-Результат: \
+Результат:
 ```
 Stop coordinates:  [37.678450655, 55.772332049]
 ```
