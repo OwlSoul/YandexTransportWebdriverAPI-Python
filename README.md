@@ -221,7 +221,7 @@ Stop coordinates:  [37.678450655, 55.772332049]
 ### get_route_info (внутренняя команда - getRouteInfo, функция Masstransit API - getRouteInfo)
 ```get_route_info(url, query_id=None, blocking=True, timeout=0, callback=None):```
 
-Получение информации омаршруте по URL.
+Получение информации о маршруте по URL.
 
 Параметры:
 * **url** - url остановки.
