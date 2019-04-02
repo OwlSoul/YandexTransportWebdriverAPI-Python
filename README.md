@@ -122,7 +122,7 @@ def callback_fun(data):
 
 # Прокси-сервер находится на 172.17.0.1:25555
 proxy = YandexTransportProxy('172.17.0.1', 25555)
-result = proxy.get_echo("Hello!", query_id='ID001', blocking=False, callback=ca$
+result = proxy.get_echo("Hello!", query_id='ID001', blocking=False, callback=callback_fun)
 print("Async function terminated!")
 # Пусть основной поток немного подождет. 
 time.sleep(20)
@@ -136,7 +136,7 @@ Received {'id': 'ID001', 'response': 'OK', 'queue_position': 0}
 Received {'id': 'ID001', 'method': 'getEcho', 'error': 0, 'message': 'OK', 'expect_more_data': False, 'data': 'Hello!'}
 ```
 
-При асинхронном режиме данные приходят в виде JSON: \
+При асинхронном режиме данные приходят в виде JSON, параметр data - словарь (dictionary), содержащий в себе весь результат: \
 Первый ответ приходит сразу при успешном добавлении запроса в очередь на прокси-сервере.
 ```{'id': 'ID001', 'response': 'OK', 'queue_position': 0}```
 Здесь:
@@ -152,8 +152,70 @@ Received {'id': 'ID001', 'method': 'getEcho', 'error': 0, 'message': 'OK', 'expe
 * **error** - код ошибки, 0 если все хорошо.
 * **message** - сообщение об ошибке, 'OK' если все в порядке
 * **expect_more_data** - если False, то это последнее сообщение от сервера по запросу с указанным ID (ID001),  больше данных не придет.
-* **data** - непосредственно данные, при выполнении сложных запросов masstransitAPI здесь будет находиться полученный от Яндекса JSON
+* **data** - словарь (dictionary), непосредственно данные, при выполнении сложных запросов masstransitAPI здесь будет находиться полученный от Яндекса JSON.
 
+----
+
+### get_stop_info (внутренняя команда - getStopInfo, функция Masstransit API - getStopInfo)
+```get_stop_info(url, query_id=None, blocking=True, timeout=0, callback=None):```
+
+Тестовая функция, помещает команду ```getEcho``` в очередь YandexTransportProxy, и возвращает переданную строку (text) при выполнении. Остальные функции построены по такому же принципу (особено в той части которая касается асинхронного режима).
+
+Параметры:
+* **url** - url остановки.
+* **query_id** - см. общие параметры для всех функций.
+* **blocking** - см. общие параметры для всех функций.
+* **timeout** - см. общие параметры для всех функций.
+* **callback** - см. общие параметры для всех функций.
+
+Пример использования, синхронный режим :
+
+```
+import json
+from yandex_transport_webdriver_api import YandexTransportProxy
+
+# Прокси-сервер находится на 172.17.0.1:25555
+proxy = YandexTransportProxy('172.17.0.1', 25555)
+url = "https://yandex.ru/maps/213/moscow/?masstransit[stopId]=stop__9643291"
+result = proxy.get_stop_info(url)
+# Вытаскиваем координаты остановки
+coords = result['data']['geometries'][0]['coordinates']
+print("Stop coordinates: ", coords)
+```
+
+Результат: \
+```
+Stop coordinates:  [37.678450655, 55.772332049]
+```
+
+Пример использования, асинхронный режим:
+
+```
+import time
+import json
+from yandex_transport_webdriver_api import YandexTransportProxy
+
+def callback_fun(data):
+    if 'data' in data:
+        result = data['data']
+        # Вытаскиваем координаты остановки
+        coords = result['data']['geometries'][0]['coordinates']
+        print("Stop coordinates: ", coords)
+
+# Прокси-сервер находится на 172.17.0.1:25555
+proxy = YandexTransportProxy('172.17.0.1', 25555)
+url = "https://yandex.ru/maps/213/moscow/?masstransit[stopId]=stop__9643291"
+result = proxy.get_stop_info(url, query_id='ID001', blocking=False, callback=ca$
+print("Async function terminated!")
+# Пусть основной поток немного подождет. 
+time.sleep(20)
+```
+
+Результат:
+```
+Async function terminated!
+Stop coordinates:  [37.678450655, 55.772332049]
+```
 ----
 
 
