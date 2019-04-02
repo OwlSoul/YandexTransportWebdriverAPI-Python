@@ -238,7 +238,7 @@ from yandex_transport_webdriver_api import YandexTransportProxy
 
 # Прокси-сервер находится на 172.17.0.1:25555
 proxy = YandexTransportProxy('172.17.0.1', 25555)
-url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_de$
+url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default"
 result = proxy.get_route_info(url)
 # Вытаскиваем назвение первой остановки на маршруте
 stop_name = result['data']['features'][0]['features'][0]['properties']['name']
@@ -271,7 +271,7 @@ from yandex_transport_webdriver_api import YandexTransportProxy
 
 # Прокси-сервер находится на 172.17.0.1:25555
 proxy = YandexTransportProxy('172.17.0.1', 25555)
-url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_de$
+url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default"
 result = proxy.get_vehicles_info(url)
 ```
 ----
@@ -296,15 +296,99 @@ from yandex_transport_webdriver_api import YandexTransportProxy
 
 # Прокси-сервер находится на 172.17.0.1:25555
 proxy = YandexTransportProxy('172.17.0.1', 25555)
-url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_de$
+url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default"
 result = proxy.get_vehicles_info_with_region(url)
 ```
 ----
 
+### get_layer_regions (внутренняя команда - getLayerRegions, функция Masstransit API - getLayerRegions)
+```get_layer_regions(url, query_id=None, blocking=True, timeout=0, callback=None):```
 
+"Runnung Gag" этого проекта в том что не ясно за что оно отвечает. Это самый часто вызываемый метод, и он принаджежит Masstransit API, так что он добавлен сюда, но что именно оно делает - пока загадка. Для работы с информацией о транспорте и остановках эта штука вроде и не нужнаЮЮ остальные методы отлично справляются.
+
+Параметры:
+* **url** - url остановки.
+* **query_id** - см. общие параметры для всех функций.
+* **blocking** - см. общие параметры для всех функций.
+* **timeout** - см. общие параметры для всех функций.
+* **callback** - см. общие параметры для всех функций.
+
+Пример использования, синхронный режим :
+
+```
+import json
+from yandex_transport_webdriver_api import YandexTransportProxy
+
+# Прокси-сервер находится на 172.17.0.1:25555
+proxy = YandexTransportProxy('172.17.0.1', 25555)
+url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default"
+result = proxy.get_layer_regions(url)
+```
+----
+
+### get_all_info (внутренняя команда - getAllInfo, функция Masstransit API - нет)
+```get_all_info(url, query_id=None, blocking=True, timeout=0, callback=None):```
+
+Универсальный метод, просто выдает все возможные методы по скормленому ему URL. В отличие от предыдущих методов, возвращавших уже готовый результат в виде словаря (dictionary), этот метод возвращает массив из словарей следующего вида:
+
+```
+[
+{"method": "getRouteInfo", "data": dictionary_containing_get_route_info_data},
+{"method": "getVehiclesInfo", "data": dictionary_containing_get_vehicles_info_data},
+{"method": "getVehiclesInfoWithRegion", "data": dictionary_containing_get_vehicles_info_with_region_data},
+{"method": "getLayerRegions", "data": dictionary_containing_get_layer_regions_data}
+]
+```
+
+То есть он возвращает просто все методы, которые смог найти. Если не нашел ничего, связанного с Яндексом и его MassTransit API - злобно кинет исключение.
+
+Параметры:
+* **url** - url остановки.
+* **query_id** - см. общие параметры для всех функций.
+* **blocking** - см. общие параметры для всех функций.
+* **timeout** - см. общие параметры для всех функций.
+* **callback** - см. общие параметры для всех функций.
+
+Пример использования, синхронный режим :
+
+```
+import json
+from yandex_transport_webdriver_api import YandexTransportProxy
+
+# Прокси-сервер находится на 172.17.0.1:25555
+proxy = YandexTransportProxy('172.17.0.1', 25555)
+url = "https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default"
+result = proxy.get_all_info(url)
+# Вывести полученные методы и размеры ответа по каждому из них
+for entry in result:
+    print(entry['method'], len(str(entry['data'])))
+
+```
+
+Результат:
+```
+getRouteInfo 115217
+getLayerRegions 28532
+getVehiclesInfo 3979
+getVehiclesInfoWithRegion 3979
+```
+
+----
 
 ## Обратная связь
+Гарантий что эта штука будет работать долго и счастливо - никаких. Яндекс может в любой момент устроить что-нибудь что сделает работу этого проекта невозможным. Проект находится на постоянной системе мониторинга, и если что-то отваливается или перестает работать - автор об этом оперативно узнает, и поправит, если это возможно.
+
+В любом случае, сообщить о возникшей проблеме всегда можно здесь: \
+https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/issues/new
 
 ## Лицензия / License
+Исходный код распространяется под лицензией MIT, "как есть (as is)", автор ответственности за возможные проблемы при его использовании не несет (но будет глубоко расстроен).
+
+The code is distributed under MIT licence, AS IS, author do not bear any responsibility for possible problems with usage of this project (but he will be very sad).
 
 ## Титры / Credits
+__Project author:__ [Yury D.](https://github.com/OwlSoul) (TheOwlSoul@gmail.com) \
+__PEP-8 Evangelist, Good Cop:__ [Pavel Lutskov](https://github.com/ltskv) \
+__PEP-8 Evangelist, Bad Cop:__ [Yury Alexeev](https://github.com/Kuma-San0217)
+
+----
