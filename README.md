@@ -388,7 +388,7 @@ https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/issues/new
 
 The code is distributed under MIT licence, AS IS, author do not bear any responsibility for possible problems with usage of this project (but he will be very sad).
 
-## Титры / Credits
+## Зал славы / Credits
 __Project author:__ [Yury D.](https://github.com/OwlSoul) (TheOwlSoul@gmail.com) \
 __PEP-8 Evangelist, Good Cop:__ [Pavel Lutskov](https://github.com/ltskv) \
 __PEP-8 Evangelist, Bad Cop:__ [Yury Alexeev](https://github.com/Kuma-San0217)
