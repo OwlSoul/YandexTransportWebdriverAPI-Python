@@ -37,27 +37,25 @@ class YandexTransportProxy:
     YandexTransportProxy class, provides proxy access to Yandex Transport Masstransit API.
     """
 
-    ERROR_OK = 0
-    ERROR_TIMEOUT = 1
-
     # Result error codes
     RESULT_OK = 0
     RESULT_NO_DATA = 1
     RESULT_GET_ERROR = 2
     RESULT_NO_YANDEX_DATA = 3
-    RESULT_JSON_LOADS_ERROR = 10
-    RESULT_JSON_HAS_ERROR = 11
 
     def __init__(self, host, port):
+        # Host and port of Yandex Transport Proxy server
         self.host = host
         self.port = port
 
+        # Buffer size, to receive data.
         self.buffer_size = 4096
 
+        # Logger
         self.log = Logger(Logger.NONE)
 
         # Log buffer messages to a file
-        self.log_buffer = True
+        self.log_buffer = False
         self.log_buffer_file = 'ytapi-wd-python.log'
 
     def callback_function_example(self, data):
@@ -221,7 +219,7 @@ class YandexTransportProxy:
             # This might take a while, will block
             if timeout > 0:
                 sock.settimeout(timeout)
-            result= self._single_query_blocking(sock, command)
+            result =  self._single_query_blocking(sock, command)
             self._disconnect(sock)
         else:
             # This will return immediately, will not block
@@ -240,7 +238,7 @@ class YandexTransportProxy:
     # ---------------------------------------------------------------------------------------------------------------- #
     # ----                                     SERVER CONTROL METHODS                                             ---- #
     #                                                                                                                  #
-    # These are the methods to control and test.py Yandex Transport Proxy server behaviour.                               #
+    # These are the methods to control and test.py Yandex Transport Proxy server behaviour.                            #
     # ---------------------------------------------------------------------------------------------------------------- #
 
     # NOTE: there are 5 parameters for get... methods, not counting self. All are important.
@@ -269,7 +267,10 @@ class YandexTransportProxy:
                  for non-blocking mode: empty string
         """
         result = self._execute_get_query('getEcho', text, query_id, blocking, timeout, callback)
-        return result[-1]['data']
+        if blocking:
+            return result[-1]['data']
+        else:
+            return
 
     # ---------------------------------------------------------------------------------------------------------------- #
     # ----                                        CORE API METHODS                                                ---- #
@@ -300,7 +301,10 @@ class YandexTransportProxy:
                  for non-blocking mode: empty string
         """
         result = self._execute_get_query('getStopInfo', url, query_id, blocking, timeout, callback)
-        return result[-1]['data']
+        if blocking:
+            return result[-1]['data']
+        else:
+            return
 
     def get_route_info(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
@@ -324,7 +328,10 @@ class YandexTransportProxy:
                  for non-blocking mode: empty string
         """
         result = self._execute_get_query('getRouteInfo', url, query_id, blocking, timeout, callback)
-        return result[-1]['data']
+        if blocking:
+            return result[-1]['data']
+        else:
+            return
 
     def get_vehicles_info(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
@@ -349,7 +356,10 @@ class YandexTransportProxy:
                  for non-blocking mode: empty string
         """
         result = self._execute_get_query('getVehiclesInfo', url, query_id, blocking, timeout, callback)
-        return result[-1]['data']
+        if blocking:
+            return result[-1]['data']
+        else:
+            return
 
     def get_vehicles_info_with_region(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
@@ -374,7 +384,10 @@ class YandexTransportProxy:
                  for non-blocking mode: empty string
         """
         result = self._execute_get_query('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
-        return result[-1]['data']
+        if blocking:
+            return result[-1]['data']
+        else:
+            return
 
     def get_layer_regions(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
@@ -398,7 +411,10 @@ class YandexTransportProxy:
                  for non-blocking mode: empty string
         """
         result = self._execute_get_query('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
-        return result[-1]['data']
+        if blocking:
+            return result[-1]['data']
+        else:
+            return
 
     def get_all_info(self, url, query_id=None, blocking=True, timeout=0, callback=None):
         """
@@ -420,13 +436,16 @@ class YandexTransportProxy:
                          Used if block is set to False.
         :return: for blocking mode: array of dictionaries in the following format:
                                     {'method': method, 'data': data}
-                                    where method - the API method called (get_stop_info, get_route_info, get_vehicles_info)
+                                    where method - the API method called
+                                                   (get_stop_info, get_route_info, get_vehicles_info)
                                           data   - another dictionary containing all data for given method.
                  for non-blocking mode: empty string
                 """
         result = self._execute_get_query('getAllInfo', url, query_id, blocking, timeout, callback)
-        return result
-
+        if blocking:
+            return result
+        else:
+            return
     # pylint: enable = R0913
 
     # ---------------------------------------------------------------------------------------------------------------- #

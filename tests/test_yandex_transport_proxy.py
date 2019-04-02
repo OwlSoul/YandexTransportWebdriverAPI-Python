@@ -224,7 +224,7 @@ def test_count_vehicles_on_route_saved_data():
     """
     Count vehicles on route from test.py data, 8 buses on route.
     """
-    with open('testdata/getRouteInfo_bus-M7.json', 'r') as json_file:
+    with open('tests/testdata/getRouteInfo_bus-M7.json', 'r') as json_file:
         data = json.load(json_file)
     result = YandexTransportProxy.count_vehicles_on_route(data, with_region=False)
     assert result == 8
