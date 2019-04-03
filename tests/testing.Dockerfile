@@ -55,7 +55,6 @@ ADD yandex_transport_webdriver_api/* /home/transport_api/yandex_transport_webdri
 
 # Copying tests
 ADD tests/* /home/transport_api/tests/
-ADD testdata/* /home/transport_api/testdata/
 ADD execute_tests.sh /home/transport_api
 ADD continuous_tests.sh /home/transport_api
 
