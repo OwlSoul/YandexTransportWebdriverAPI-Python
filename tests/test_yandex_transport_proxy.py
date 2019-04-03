@@ -220,6 +220,7 @@ def test_count_vehicles_on_route_no_data():
     assert result is None
 
 @pytest.mark.timeout(120)
+@pytest.mark.xfail
 def test_count_vehicles_on_route_saved_data():
     """
     Count vehicles on route from test.py data, 8 buses on route.
