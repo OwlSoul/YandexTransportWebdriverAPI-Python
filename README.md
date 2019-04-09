@@ -78,6 +78,9 @@ with open('data.json', 'w') as file:
     file.write(json.dumps(data,indent=4, separators=(',', ': ')))
 ```
 
+Данных приходит очень много, и лучше просто один раз взглянуть на них, чем пытаться здесь все задокументировать.
+Примеры приходящих данных можно посмотреть в [wiki к YandexProxyServer](https://github.com/OwlSoul/YandexTransportProxy/wiki):
+
 ## Установка
 
 Проект можно поставить через pip3:
