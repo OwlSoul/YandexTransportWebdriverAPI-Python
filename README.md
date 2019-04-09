@@ -61,6 +61,23 @@ result_json_vehicles = proxy.getVehiclesInfo(route_url)
 
 Прокси-сервер [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy) реализует из себя очередь, где полученные от данного API команды выполняются в один поток, с определенной задержкой между запросами. Такое поведение заложено по дизайну, для максимального имитирования работы обычного пользователя, и снижения потенциальной нагрузки на сервера Яндекс (в том числе с целью избежания временного бана за слишком частые запросы, и мы не хотим его злить).
 
+JSON данные от Яндекса очень таких приличных размеров, и самый простой способ посмотреть что именно приходит по запросу - просто сохранить данные в какой-либо файл, и потом визуализировать, например [здесь](http://jsonviewer.stack.hu/): 
+
+```
+#!/usr/bin/env python3
+
+# Basic example, get stop info and save it to a file
+
+import json
+from yandex_transport_webdriver_api import YandexTransportProxy
+
+proxy = YandexTransportProxy('127.0.0.1', 25555)
+url = "https://yandex.ru/maps/213/moscow/?ll=37.742975%2C55.651185&masstransit%5BstopId%5D=stop__9647487&mode=stop&z=18"
+data = proxy.get_stop_info(url)
+with open('data.json', 'w') as file:
+    file.write(json.dumps(data,indent=4, separators=(',', ': ')))
+```
+
 ## Установка
 
 Проект можно поставить через pip3:
@@ -73,7 +90,7 @@ pip3 install yandex-transport-webdriver-api
 
 Каких-то важных зависимостей у библиотеки нет, только стандартные библиотеки Python3.
 
-Не забывайте, что для работы нужен запущенный и доступный по сети сервер [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy), хотя бы один (а можно и Kubernetes кластер из них сгородить).
+Не забывайте, что для работы нужен запущенный и доступный по сети сервер [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy), хотя бы один (а можно и Kubernetes кластер из них создать).
 
 ## Реализованные функции
 Функции для получения информации от Яндекс.Транспорта могут работать как в блокирующем (синхронном), так и в неблокирующем (асинхронном) режимах.
