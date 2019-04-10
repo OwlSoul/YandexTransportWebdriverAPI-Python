@@ -118,7 +118,7 @@ pip3 install yandex-transport-webdriver-api
 |[get_all_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_all_info)| - |Универсальный метод, просто выдает все возможные методы по скормленому ему URL|
 
 ## F.A.Q.
-**Q:** get_vehicles_info (getVehiclesInfo) не работает, хотя в браузере трнспорт на аршруте отображается.
+**Q:** get_vehicles_info (getVehiclesInfo) не работает, хотя в браузере трнспорт на аршруте отображается. \
 **A:** Возможно на данном маршруте getVehiclesInfo уже не применятся, стоит попробовать get_vehicles_info_with_region (getVehiclesInfoWithRegion), или get_all_info и просто посмотреть какие именно запросы Yandex Masstransit API выполняются по переданному 
 
 ## Обратная связь
