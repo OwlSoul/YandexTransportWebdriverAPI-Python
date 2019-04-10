@@ -114,7 +114,7 @@ pip3 install yandex-transport-webdriver-api
 | [get_route_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_route_info) | getRouteInfo | Получение информации о маршруте |
 |[get_vehicles_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_vehicles_info)|getVehiclesInfo| Получить информацию о транспорте на маршруте|
 |[get_vehicles_info_with_region](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_vehicles_info_with_region) | getVehiclesInfoWithRegion | Получение информации о транспорте на маршруте, с дополнительной информацией о регионе. Возможно скоро полностью сменит предыдущий метод. |
-|[get_layer_regions](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_layer_regions)| getLayerRegions | "Runnung Gag" этого проекта, не ясно за что оно отвечает. |
+|[get_layer_regions](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_layer_regions)| getLayerRegions | "Running Gag" этого проекта, не ясно за что оно отвечает. |
 |[get_all_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_all_info)| - |Универсальный метод, просто выдает все возможные методы по скормленому ему URL|
 
 ## F.A.Q.
