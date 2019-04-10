@@ -117,6 +117,9 @@ pip3 install yandex-transport-webdriver-api
 |[get_layer_regions](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_layer_regions)| getLayerRegions | "Runnung Gag" этого проекта, не ясно за что оно отвечает. |
 |[get_all_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_all_info)| - |Универсальный метод, просто выдает все возможные методы по скормленому ему URL|
 
+## F.A.Q.
+**Q:** get_vehicles_info (getVehiclesInfo) не работает, хотя в браузере трнспорт на аршруте отображается.
+**A:** Возможно на данном маршруте getVehiclesInfo уже не применятся, стоит попробовать get_vehicles_info_with_region (getVehiclesInfoWithRegion), или get_all_info и просто посмотреть какие именно запросы Yandex Masstransit API выполняются по переданному 
 
 ## Обратная связь
 Гарантий что эта штука будет работать долго и счастливо - никаких. Яндекс может в любой момент устроить что-нибудь что сделает работу этого проекта невозможным. Проект находится на постоянной системе мониторинга, и если что-то отваливается или перестает работать - автор об этом оперативно узнает, и поправит, если это возможно.
