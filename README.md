@@ -18,6 +18,12 @@ A "sort of API" to access Yandex Transport/Masstransit data, designed to work in
 |[getVehiclesInfoWithRegion](https://github.com/OwlSoul/YandexTransportProxy/wiki/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80:-getVehiclesInfoWithRegion)|![30](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=30)|![31](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=31)|![32](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=32)|![33](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=33)|![34](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=34)|![35](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=35)| - |
 |[getRegionLayers](https://github.com/OwlSoul/YandexTransportProxy/wiki/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80:-getLayerRegions)|![40](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=40)|![41](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=41)|![42](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=42)|![43](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=43)|![44](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=44)|![45](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=45)| - |
 
+![Success](http://owlsoul.biz.tm/YandexTransportProxy/indicators/legend/success.png) - тест пройден \
+![Success](http://owlsoul.biz.tm/YandexTransportProxy/indicators/legend/dummy.png) - тест неприменим к данному URL \
+![Success](http://owlsoul.biz.tm/YandexTransportProxy/indicators/legend/failed.png) - тест провален
+
+URL каждого теста можно узнать нажав на его номер в таблице.
+
 ## Предназначение проекта
 
 Данное "API" позволяет автоматизировать получение данных от Яндекс.Транспорт Masstransit API (закрытого на данный момент для сторонних пользователей). Получить данные вроде "покажи координаты всего общественного транспорта в таком-то районе" или "выдай мне данные о координатах транспорта по всему городу в данный момент" с помощью этой штуковины просто так нельзя. Зато с ее помощью можно автоматизировать получение данных  по конкретной остановке, или по конкретному маршруту, и получить их именно в том формате в котором Яндекс их пересылает - здоровенные такие JSON-структуры (до 150 килобайт и больше). 
