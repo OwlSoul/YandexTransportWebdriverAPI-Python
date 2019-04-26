@@ -58,6 +58,7 @@ ADD tests/* /home/transport_api/tests/
 ADD tests/testdata/* /home/transport_api/testdata/
 ADD execute_tests.sh /home/transport_api
 ADD continuous_tests.sh /home/transport_api
+ADD function_monitoring.sh /home/transport_api
 
 RUN chown -R transport_api:transport_api /home/transport_api
 WORKDIR /home/transport_api
