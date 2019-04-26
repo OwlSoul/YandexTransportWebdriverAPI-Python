@@ -6,6 +6,9 @@ NOTE: These are designed to run indefinitely and check current YandexTransportAP
       They take a lot of time as a result.
 
 NOTE: Tests require running YandexTransportProxy server
+
+UPD:  These are kinda questionable, they made sence in the era of YandexTransportMonitor,
+      but now they kinda... don't.
 """
 
 import pytest
