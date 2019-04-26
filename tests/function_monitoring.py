@@ -164,76 +164,77 @@ def test_05():
 
 # ------                                           getRouteInfo                                                 ------ #
 def test_10():
-    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 10, url3['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getStopInfo', 10)) == RESULT_DUMMY
 
 def test_11():
-    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 11, url4['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getStopInfo', 11)) == RESULT_DUMMY
 
 def test_12():
-    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 12, url5['url'])) == RESULT_OK
+    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 12, url3['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_13():
-    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 13, url6['url'])) == RESULT_OK
+    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 13, url4['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_14():
-    assert perform_test(dummy_test('getStopInfo', 14)) == RESULT_DUMMY
+    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 14, url5['url'])) == RESULT_OK
+    sleep_random_time()
 
 def test_15():
-    assert perform_test(dummy_test('getStopInfo', 15)) == RESULT_DUMMY
+    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 15, url6['url'])) == RESULT_OK
+    sleep_random_time()
 
 # ------                                         getVehiclesInfo                                                ------ #
 def test_20():
-    assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 20, url3['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getStopInfo', 20)) == RESULT_DUMMY
 
 def test_21():
-    assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 21, url4['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getStopInfo', 21)) == RESULT_DUMMY
 
 def test_22():
-    assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 22, url5['url'])) == RESULT_OK
+    assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 22, url3['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_23():
-    assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 23, url6['url'])) == RESULT_OK
+    assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 23, url4['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_24():
-    assert perform_test(dummy_test('getStopInfo', 24)) == RESULT_DUMMY
+    assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 24, url5['url'])) == RESULT_OK
+    sleep_random_time()
 
 def test_25():
-    assert perform_test(dummy_test('getStopInfo', 25)) == RESULT_DUMMY
+    assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 25, url6['url'])) == RESULT_OK
+    sleep_random_time()
 
 # ------                                         getVehiclesInfo                                                ------ #
+
 def test_30():
-    assert perform_test(_get_info(proxy.get_vehicles_info_with_region, 'getVehiclesInfoWithRegion', 30,
-                                      url3['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getStopInfo', 30)) == RESULT_DUMMY
 
 def test_31():
-    assert perform_test(_get_info(proxy.get_vehicles_info_with_region, 'getVehiclesInfoWithRegion', 31,
-                                      url4['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getStopInfo', 31)) == RESULT_DUMMY
 
 def test_32():
     assert perform_test(_get_info(proxy.get_vehicles_info_with_region, 'getVehiclesInfoWithRegion', 32,
-                                      url5['url'])) == RESULT_OK
+                                      url3['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_33():
     assert perform_test(_get_info(proxy.get_vehicles_info_with_region, 'getVehiclesInfoWithRegion', 33,
-                                      url6['url'])) == RESULT_OK
+                                      url4['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_34():
-    assert perform_test(dummy_test('getStopInfo', 34)) == RESULT_DUMMY
+    assert perform_test(_get_info(proxy.get_vehicles_info_with_region, 'getVehiclesInfoWithRegion', 34,
+                                      url5['url'])) == RESULT_OK
+    sleep_random_time()
 
 def test_35():
-    assert perform_test(dummy_test('getStopInfo', 35)) == RESULT_DUMMY
+    assert perform_test(_get_info(proxy.get_vehicles_info_with_region, 'getVehiclesInfoWithRegion', 35,
+                                      url6['url'])) == RESULT_OK
+    sleep_random_time()
 
 # ------                                         getLayerRegions                                                ------ #
 def test_40():
