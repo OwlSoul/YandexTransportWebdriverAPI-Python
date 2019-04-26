@@ -15,7 +15,7 @@ import pytest
 
 RESULT_FILENAME = "function-monitoring.json"
 
-PROXY_HOST = '127.0.0.1'
+PROXY_HOST = '172.17.0.1'
 PROXY_PORT = 25555
 
 url1 = {'type': 'stop',
