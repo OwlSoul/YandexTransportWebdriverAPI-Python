@@ -1,5 +1,7 @@
 # Yandex Transport Webdriver API
 
+**Build status:** ![Build Status](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=python-api-build)
+
 A "sort of API" to access Yandex Transport/Masstransit data, designed to work in conjunction with [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy).
 
 Своеобразное "API" для доступа к данным Яндекс Транспорт (Masstransit API), предназначено для работы в паре с [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy).
