@@ -128,7 +128,7 @@ pip3 install yandex-transport-webdriver-api
 | Метод | Соответствующий метод Yandex Masstransit API | Назначение |
 |-----|-----|-----|
 | [get_echo](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_echo) | - | Тестовая функция, помещает команду getEcho в очередь YandexTransportProxy, и возвращает переданную строку (text) при выполнении |
-| [get_stop_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_stop_info) | getStopInfo | Получить данные об остановки (проходящие маршруты, время прибытия и т.д.) |
+| [get_stop_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_stop_info) | getStopInfo | Получить данные об остановке (проходящие маршруты, время прибытия и т.д.) |
 | [get_route_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_route_info) | getRouteInfo | Получение информации о маршруте |
 |[get_vehicles_info](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_vehicles_info)|getVehiclesInfo| Получить информацию о транспорте на маршруте|
 |[get_vehicles_info_with_region](https://github.com/OwlSoul/YandexTransportWebdriverAPI-Python/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4:-get_vehicles_info_with_region) | getVehiclesInfoWithRegion | Получение информации о транспорте на маршруте, с дополнительной информацией о регионе. Возможно скоро полностью сменит предыдущий метод. |
