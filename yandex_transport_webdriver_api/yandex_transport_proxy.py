@@ -410,7 +410,7 @@ class YandexTransportProxy:
                  json.dumps() function to get original Yandex API JSON.
                  for non-blocking mode: empty string
         """
-        result = self._execute_get_query('getVehiclesInfoWithRegion', url, query_id, blocking, timeout, callback)
+        result = self._execute_get_query('getLayerRegions', url, query_id, blocking, timeout, callback)
         if blocking:
             return result[-1]['data']
         else:
