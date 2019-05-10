@@ -8,7 +8,7 @@ A "sort of API" to access Yandex Transport/Masstransit data, designed to work in
 
 *This project is for "Yandex.Maps" and "Yandex.Transport" services, so it's expected that majority of potential users are from Russian Federation, thus the README is written in russian language.*
 
-![Yandex Transport Proxy Logo](https://raw.githubusercontent.com/OwlSoul/Images/master/YandexTransportProxy/yandex_transport_logo_python.jpg)
+![Yandex Transport Proxy Logo](https://raw.githubusercontent.com/OwlSoul/Images/master/YandexTransportProxy/yandex_transport_logo_python.png)
 
 ## Статус тестов поддерживаемых функций
 
