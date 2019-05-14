@@ -10,7 +10,7 @@ if __name__ == '__main__':
     # Route  : Tram "A", Moscow
     # Маршрут: Трамвай "А", Москва
     url = 'https://yandex.ru/maps/213/moscow/?ll=37.670196%2C55.730905&' \
-          'masstransit[routeId]=213_A_tramway_mosgortrans&' \
+          'masstransit[lineId]=213_A_tramway_mosgortrans&' \
           'masstransit[stopId]=stop__9645568&' \
           'masstransit[threadId]=2036927519&' \
           'mode=stop&z=13'

@@ -12,7 +12,7 @@ A "sort of API" to access Yandex Transport/Masstransit data, designed to work in
 
 ## Статус тестов поддерживаемых функций
 
-|Метод| [01](https://yandex.ru/maps/213/moscow/?ll=37.743904%2C55.651365&masstransit%5BstopId%5D=stop__9647487&mode=stop&z=18) | [02](https://yandex.ru/maps/75/vladivostok/?ll=131.885616%2C43.115286&masstransit%5BstopId%5D=stop__10203347&mode=stop&z=18)| [03](https://yandex.ru/maps/54/yekaterinburg/?ll=60.646349%2C56.843264&masstransit%5BrouteId%5D=2107048882&masstransit%5BstopId%5D=stop__9810453&masstransit%5BthreadId%5D=2107049144&mode=stop&z=18) | [04](https://yandex.ru/maps/2/saint-petersburg/?ll=30.327096%2C59.935525&masstransit%5BrouteId%5D=2472220701&masstransit%5BstopId%5D=stop__10075220&masstransit%5BthreadId%5D=2472221195&mode=stop&z=17) | [05](https://yandex.ru/maps/19/syktyvkar/?ll=50.786616%2C61.726630&masstransit%5BrouteId%5D=3332066175&masstransit%5BstopId%5D=3306903125&masstransit%5BthreadId%5D=3332141745&mode=stop&z=17) | [06](https://yandex.ru/maps/65/novosibirsk/?ll=82.916800%2C55.031903&masstransit%5BrouteId%5D=65_18_bus_novosibirskgortrans&masstransit%5BstopId%5D=stop__9981979&masstransit%5BthreadId%5D=65B_18_bus_novosibirskgortrans&mode=stop&z=17) | Комментарий |
+|Метод| [01](https://yandex.ru/maps/213/moscow/?ll=37.743904%2C55.651365&masstransit%5BstopId%5D=stop__9647487&mode=stop&z=18) | [02](https://yandex.ru/maps/75/vladivostok/?ll=131.885616%2C43.115286&masstransit%5BstopId%5D=stop__10203347&mode=stop&z=18)| [03](https://yandex.ru/maps/54/yekaterinburg/?ll=60.646349%2C56.843264&masstransit%5BlineID%5D=2107048882&masstransit%5BstopId%5D=stop__9810453&masstransit%5BthreadId%5D=2107049144&mode=stop&z=18) | [04](https://yandex.ru/maps/2/saint-petersburg/?ll=30.327096%2C59.935525&masstransit%5BlineID%5D=2472220701&masstransit%5BstopId%5D=stop__10075220&masstransit%5BthreadId%5D=2472221195&mode=stop&z=17) | [05](https://yandex.ru/maps/19/syktyvkar/?ll=50.786616%2C61.726630&masstransit%5BlineID%5D=3332066175&masstransit%5BstopId%5D=3306903125&masstransit%5BthreadId%5D=3332141745&mode=stop&z=17) | [06](https://yandex.ru/maps/65/novosibirsk/?ll=82.916800%2C55.031903&masstransit%5BlineID%5D=65_18_bus_novosibirskgortrans&masstransit%5BstopId%5D=stop__9981979&masstransit%5BthreadId%5D=65B_18_bus_novosibirskgortrans&mode=stop&z=17) | Комментарий |
 |----|----|----|----|----|----|----|----|
 |[getStopInfo](https://github.com/OwlSoul/YandexTransportProxy/wiki/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80:-getStopInfo)|![00](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=0)|![01](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=1)|![02](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=2)|![03](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=3)|![04](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=4)|![05](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=5)| - |
 |[getRouteInfo](https://github.com/OwlSoul/YandexTransportProxy/wiki/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80:-getRouteInfo)|![10](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=10)|![11](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=11)|![12](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=12)|![13](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=13)|![14](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=14)|![15](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=15)| - |
@@ -50,9 +50,9 @@ https://yandex.ru/maps/213/moscow/?ll=37.678708,55.772438&masstransit[stopId]=st
 
 **Маршрут "Трамвай Б", Москва**:
 
-https://yandex.ru/maps/213/moscow/?ll=37.679549,55.772203&masstransit[routeId]=B_tramway_default&masstransit[stopId]=stop__9643291&masstransit[threadId]=BA_tramway_default&mode=stop&z=18
+https://yandex.ru/maps/213/moscow/?ll=37.679549,55.772203&masstransit[lineID]=B_tramway_default&masstransit[stopId]=stop__9643291&masstransit[threadId]=BA_tramway_default&mode=stop&z=18
 
-Здесь важная часть - *"masstransit[routeId]=B_tramway_default"*, и ссылка https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default точно так же будет работать в браузере.
+Здесь важная часть - *"masstransit[lineID]=B_tramway_default"*, и ссылка https://yandex.ru/maps/213/moscow/?masstransit%5BlineID%5D=B_tramway_default точно так же будет работать в браузере.
 
 ----
 
@@ -70,7 +70,7 @@ result_json = proxy.getStopInfo(stop_url)
 ```
 # Получение информации о маршруте и транспорте, прокси-сервер находится по адресу 127.0.0.1:25555
 proxy = YandexTransportProxy('127.0.0.1', 25555)
-route_url = https://yandex.ru/maps/213/moscow/?masstransit%5BrouteId%5D=B_tramway_default
+route_url = https://yandex.ru/maps/213/moscow/?masstransit%5BlineID%5D=B_tramway_default
 result_json_route = proxy.getRouteInfo(route_url)
 result_json_vehicles = proxy.getVehiclesInfo(route_url)
 ```

@@ -33,25 +33,25 @@ url2 = {'type': 'stop',
 url3 = {'type': 'route',
         'name': 'Трамвай 18',
         'city': 'Екатеринбург',
-        'url': 'https://yandex.ru/maps/54/yekaterinburg/?ll=60.646349%2C56.843264&masstransit%5BrouteId%5D=2107048882&masstransit%5BstopId%5D=stop__9810453&masstransit%5BthreadId%5D=2107049144&mode=stop&z=18'
+        'url': 'https://yandex.ru/maps/54/yekaterinburg/?ll=60.646349%2C56.843264&masstransit%5BlineId%5D=2107048882&masstransit%5BthreadId%5D=2107049144&mode=stop&z=18'
        }
 
 url4 = {'type': 'route',
         'name': 'Троллейбус 11',
         'city': 'Санкт-Петербург',
-        'url': 'https://yandex.ru/maps/2/saint-petersburg/?ll=30.327096%2C59.935525&masstransit%5BrouteId%5D=2472220701&masstransit%5BstopId%5D=stop__10075220&masstransit%5BthreadId%5D=2472221195&mode=stop&z=17'
+        'url': 'https://yandex.ru/maps/2/saint-petersburg/?ll=30.327096%2C59.935525&masstransit%5BlineId%5D=2472220701&masstransit%5BthreadId%5D=2472221195&mode=stop&z=17'
        }
 
 url5 = {'type': 'route',
         'name': 'Маршрутка 108',
         'city': ' Сыктывкар',
-        'url': 'https://yandex.ru/maps/19/syktyvkar/?ll=50.786616%2C61.726630&masstransit%5BrouteId%5D=3332066175&masstransit%5BstopId%5D=3306903125&masstransit%5BthreadId%5D=3332141745&mode=stop&z=17'
+        'url': 'https://yandex.ru/maps/19/syktyvkar/?ll=50.790977%2C61.725981&masstransit%5BlineId%5D=3332066175&masstransit%5BthreadId%5D=3332141745&mode=stop&z=15'
        }
 
 url6 = {'type': 'route',
         'name': 'Автобус 18',
         'city': ' Новосибирск',
-        'url': 'https://yandex.ru/maps/65/novosibirsk/?ll=82.916800%2C55.031903&masstransit%5BrouteId%5D=65_18_bus_novosibirskgortrans&masstransit%5BstopId%5D=stop__9981979&masstransit%5BthreadId%5D=65B_18_bus_novosibirskgortrans&mode=stop&z=17'
+        'url': 'https://yandex.ru/maps/65/novosibirsk/?ll=82.916800%2C55.031903&masstransit%5BlineId%5D=65_18_bus_novosibirskgortrans&masstransit%5BthreadId%5D=65B_18_bus_novosibirskgortrans&mode=stop&z=17'
        }
 
 RESULT_OK = 0

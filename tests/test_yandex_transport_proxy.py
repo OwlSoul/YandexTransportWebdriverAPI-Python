@@ -91,7 +91,7 @@ def test_get_stop_info_input():
     # URL is for Route, not stops
     with pytest.raises(Exception):
         # Route #33, Dolgoprudniy
-        url = 'https://yandex.ru/maps/213/moscow/?ll=37.537247%2C55.938577&masstransit%5BrouteId%5D=6f6f_33_bus_default&masstransit%5BstopId%5D=stop__9686981&masstransit%5BthreadId%5D=6f6fB_33_bus_default&mode=stop&z=13'
+        url = 'https://yandex.ru/maps/213/moscow/?ll=37.537247%2C55.938577&masstransit%5BlineId%5D=6f6f_33_bus_default&masstransit%5BstopId%5D=stop__9686981&masstransit%5BthreadId%5D=6f6fB_33_bus_default&mode=stop&z=13'
         transport_proxy.get_stop_info(url)
     wait_random_time()
 
@@ -239,7 +239,7 @@ def test_count_vehicles_on_route_live_data():
     Testing on Moscow Bus Route M2
     """
     transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
-    url = "https://yandex.ru/maps/213/moscow/?ll=37.595480%2C55.762943&masstransit%5BrouteId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
+    url = "https://yandex.ru/maps/213/moscow/?ll=37.595480%2C55.762943&masstransit%5BlineId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
     data = transport_proxy.get_vehicles_info_with_region(url)
     if data is None:
         result = 0
