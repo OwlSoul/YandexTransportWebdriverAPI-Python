@@ -170,20 +170,16 @@ def test_11():
     assert perform_test(dummy_test('getRouteInfo', 11)) == RESULT_DUMMY
 
 def test_12():
-    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 12, url3['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getRouteInfo', 12)) == RESULT_DUMMY
 
 def test_13():
-    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 13, url4['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getRouteInfo', 13)) == RESULT_DUMMY
 
 def test_14():
-    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 14, url5['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getRouteInfo', 14)) == RESULT_DUMMY
 
 def test_15():
-    assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 15, url6['url'])) == RESULT_OK
-    sleep_random_time()
+    assert perform_test(dummy_test('getRouteInfo', 15)) == RESULT_DUMMY
 
 # ------                                         getVehiclesInfo                                                ------ #
 def test_20():
