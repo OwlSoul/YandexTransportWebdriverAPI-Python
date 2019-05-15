@@ -146,11 +146,19 @@ def test_get_vehicles_info_input():
         url = 'https://habr.com/en/all/'
         transport_proxy.get_vehicles_info(url)
 
+# NOTE: The APPI just returns getVehiclesInfo from the stop URL.
+#       This should not happen. This is left here as a reminder to fix it later (i.e. NEVER)
+@pytest.mark.timeout(120)
+@pytest.mark.xfail
+def test_get_vehicles_info_from_stop():
     # URL is for stop, not route
-    with pytest.raises(Exception):
+    transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
+    try:
         # Остановка Метро Тимирязевская
         url = 'https://yandex.ru/maps/213/moscow/?ll=37.575338%2C55.818374&masstransit%5BstopId%5D=stop__9639793&mode=stop&z=18'
         transport_proxy.get_vehicles_info(url)
+    except Exception as e:
+        pytest.fail("An exception " + str(e) + " is raised.")
     wait_random_time()
 
 # -----------------------------------------     get_vehicles_info_with_region     ------------------------------------ #
@@ -176,11 +184,30 @@ def test_get_vehicles_info_with_region_input():
         transport_proxy.get_vehicles_info_with_region(url)
 
     # URL is for stop, not route
-    with pytest.raises(Exception):
-        # Остановка Станция ЗИЛ
-        url = 'https://yandex.ru/maps/213/moscow/?ll=37.649233%2C55.698713&masstransit%5BstopId%5D=stop__9711712&mode=stop&z=17'
-        transport_proxy.get_vehicles_info_with_region(url)
+    # UPD: 15-05-2019 Apparently, the stop URL now returns getVehiclesInfoWithRegion
+    #with pytest.raises(Exception):
+    #    # Остановка Станция ЗИЛ
+    #    url = 'https://yandex.ru/maps/213/moscow/?ll=37.649233%2C55.698713&masstransit%5BstopId%5D=stop__9711712&mode=stop&z=17'
+    #    transport_proxy.get_vehicles_info_with_region(url)
     wait_random_time()
+
+@pytest.mark.timeout(120)
+def test_get_vehicles_info_with_region_on_stop_url():
+    """
+    Test results for various URLs
+    """
+    transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
+    # URL is for stop, not route
+    # 15-05-2019 Apparently, the stop URL now returns getVehiclesInfoWithRegion
+    try:
+        # Остановка Метро Марьина Роща
+        url = 'https://yandex.ru/maps/213/moscow/?ll=37.613299%2C55.797208&masstransit%5BstopId%5D=stop__9639993&mode=stop&z=13'
+        transport_proxy.get_vehicles_info_with_region(url)
+    except Exception as e:
+        pytest.fail("An exception " + str(e) + " is raised.")
+
+    wait_random_time()
+
 
 # --------------------------------------------     get_all_info     -------------------------------------------------- #
 @pytest.mark.timeout(120)
@@ -229,20 +256,3 @@ def test_count_vehicles_on_route_saved_data():
         data = json.load(json_file)
     result = YandexTransportProxy.count_vehicles_on_route(data, with_region=False)
     assert result == 8
-
-@pytest.mark.timeout(120)
-def test_count_vehicles_on_route_live_data():
-    """
-    TODO: This is an Integration Test move it somewhere later.
-    Count vehicles on route based on life data. Should not raise any exceptions and return a number.
-    If data is None shall return None
-    Testing on Moscow Bus Route M2
-    """
-    transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
-    url = "https://yandex.ru/maps/213/moscow/?ll=37.595480%2C55.762943&masstransit%5BlineId%5D=2036924571&masstransit%5BstopId%5D=stop__9644154&masstransit%5BthreadId%5D=2077863561&mode=stop&z=13"
-    data = transport_proxy.get_vehicles_info_with_region(url)
-    if data is None:
-        result = 0
-    else:
-        result = transport_proxy.count_vehicles_on_route(data, with_region=True)
-    assert result >= 0
