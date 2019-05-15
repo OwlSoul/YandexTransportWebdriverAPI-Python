@@ -1,8 +1,8 @@
 # Yandex Transport Webdriver API
 
-*Note: Ужасно мерзкий проект для поддержки, его нельзя просто написать, сказать что оно Stable и забыть. Яндекс все время что-то у себя меняет, это надо отслеживать и исправлять здесь. В среднем раз в месяц случается "большая взбучка", и что-то отваливается.* 
-
 **Build status:** ![Build Status](http://owlsoul.biz.tm/YandexTransportProxy/status.php?test=python-api-build)
+
+*Note: Ужасно мерзкий проект для поддержки, его нельзя просто написать, сказать что оно Stable и забыть. Яндекс все время что-то у себя меняет, это надо отслеживать и исправлять здесь. В среднем раз в месяц случается "большая взбучка", и что-то отваливается.* 
 
 A "sort of API" to access Yandex Transport/Masstransit data, designed to work in conjunction with [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy).
 
