@@ -4,6 +4,8 @@
 
 *Note: Ужасно мерзкий проект для поддержки, его нельзя просто написать, сказать что оно Stable и забыть. Яндекс все время что-то у себя меняет, это надо отслеживать и исправлять здесь. В среднем раз в месяц случается "большая взбучка", и что-то отваливается.* 
 
+----
+
 A "sort of API" to access Yandex Transport/Masstransit data, designed to work in conjunction with [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy).
 
 Своеобразное "API" для доступа к данным Яндекс Транспорт (Masstransit API), предназначено для работы в паре с [YandexTransportProxy](https://github.com/OwlSoul/YandexTransportProxy).
