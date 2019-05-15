@@ -164,10 +164,10 @@ def test_05():
 
 # ------                                           getRouteInfo                                                 ------ #
 def test_10():
-    assert perform_test(dummy_test('getStopInfo', 10)) == RESULT_DUMMY
+    assert perform_test(dummy_test('getRouteInfo', 10)) == RESULT_DUMMY
 
 def test_11():
-    assert perform_test(dummy_test('getStopInfo', 11)) == RESULT_DUMMY
+    assert perform_test(dummy_test('getRouteInfo', 11)) == RESULT_DUMMY
 
 def test_12():
     assert perform_test(_get_info(proxy.get_route_info, 'getRouteInfo', 12, url3['url'])) == RESULT_OK
@@ -187,10 +187,10 @@ def test_15():
 
 # ------                                         getVehiclesInfo                                                ------ #
 def test_20():
-    assert perform_test(dummy_test('getStopInfo', 20)) == RESULT_DUMMY
+    assert perform_test(dummy_test('getVehiclesInfo', 20)) == RESULT_DUMMY
 
 def test_21():
-    assert perform_test(dummy_test('getStopInfo', 21)) == RESULT_DUMMY
+    assert perform_test(dummy_test('getVehiclesInfo', 21)) == RESULT_DUMMY
 
 def test_22():
     assert perform_test(_get_info(proxy.get_vehicles_info, 'getVehiclesInfo', 22, url3['url'])) == RESULT_OK
@@ -211,10 +211,10 @@ def test_25():
 # ------                                         getVehiclesInfo                                                ------ #
 
 def test_30():
-    assert perform_test(dummy_test('getStopInfo', 30)) == RESULT_DUMMY
+    assert perform_test(dummy_test('getVehiclesInfoWithRegion', 30)) == RESULT_DUMMY
 
 def test_31():
-    assert perform_test(dummy_test('getStopInfo', 31)) == RESULT_DUMMY
+    assert perform_test(dummy_test('getVehiclesInfoWithRegion', 31)) == RESULT_DUMMY
 
 def test_32():
     assert perform_test(_get_info(proxy.get_vehicles_info_with_region, 'getVehiclesInfoWithRegion', 32,
@@ -259,5 +259,28 @@ def test_44():
 
 def test_45():
     assert perform_test(_get_info(proxy.get_layer_regions, 'getLayerRegions', 45, url6['url'])) == RESULT_OK
+    sleep_random_time()
+
+# ------                                           getLine                                                     ------ #
+def test_50():
+    assert perform_test(dummy_test('getLine', 10)) == RESULT_DUMMY
+
+def test_51():
+    assert perform_test(dummy_test('getLine', 11)) == RESULT_DUMMY
+
+def test_52():
+    assert perform_test(_get_info(proxy.get_line, 'getLine', 12, url3['url'])) == RESULT_OK
+    sleep_random_time()
+
+def test_53():
+    assert perform_test(_get_info(proxy.get_line, 'getLine', 13, url4['url'])) == RESULT_OK
+    sleep_random_time()
+
+def test_54():
+    assert perform_test(_get_info(proxy.get_line, 'getLine', 14, url5['url'])) == RESULT_OK
+    sleep_random_time()
+
+def test_55():
+    assert perform_test(_get_info(proxy.get_line, 'getLine', 15, url6['url'])) == RESULT_OK
     sleep_random_time()
 

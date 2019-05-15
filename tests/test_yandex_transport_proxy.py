@@ -124,6 +124,35 @@ def test_get_route_info_input():
         transport_proxy.get_route_info(url)
     wait_random_time()
 
+# ---------------------------------------------     get_line     ------------------------------------------------- #
+@pytest.mark.timeout(120)
+def test_get_line_input():
+    """
+    Test results for various URLs
+    """
+    transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
+    # URL is None
+    with pytest.raises(Exception):
+        url = None
+        transport_proxy.get_line(url)
+
+    # URL is Gibberish
+    with pytest.raises(Exception):
+        url = '52086gfdgfd86534'
+        transport_proxy.get_line(url)
+
+    # URL is non-related to Yandex
+    with pytest.raises(Exception):
+        url = 'https://en.wikipedia.org/wiki/Taiwan'
+        transport_proxy.get_line(url)
+
+    # URL is for stop, not route
+    with pytest.raises(Exception):
+        # Остановка Туберкулёзный диспансер № 18
+        url = 'https://yandex.ru/maps/213/moscow/?ll=37.583033%2C55.815337&masstransit%5BstopId%5D=stop__9642178&mode=stop&z=17'
+        transport_proxy.get_line(url)
+    wait_random_time()
+
 # ---------------------------------------------     get_vehicles_info     ---------------------------------------------- #
 @pytest.mark.timeout(120)
 def test_get_vehicles_info_input():
@@ -245,14 +274,3 @@ def test_count_vehicles_on_route_no_data():
     transport_proxy = YandexTransportProxy(SERVER_HOST, SERVER_PORT)
     result = transport_proxy.count_vehicles_on_route(None)
     assert result is None
-
-@pytest.mark.timeout(120)
-@pytest.mark.xfail
-def test_count_vehicles_on_route_saved_data():
-    """
-    Count vehicles on route from test.py data, 8 buses on route.
-    """
-    with open('tests/testdata/getRouteInfo_bus-M7.json', 'r') as json_file:
-        data = json.load(json_file)
-    result = YandexTransportProxy.count_vehicles_on_route(data, with_region=False)
-    assert result == 8

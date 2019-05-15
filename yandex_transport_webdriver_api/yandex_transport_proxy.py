@@ -13,7 +13,7 @@ from terminal station).
 __author__ = "Yury D."
 __credits__ = ["Yury D.", "Pavel Lutskov", "Yury Alexeev"]
 __license__ = "MIT"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __maintainer__ = "Yury D."
 __email__ = "SoulGate@yandex.ru"
 __status__ = "Beta"
@@ -301,6 +301,33 @@ class YandexTransportProxy:
                  for non-blocking mode: empty string
         """
         result = self._execute_get_query('getStopInfo', url, query_id, blocking, timeout, callback)
+        if blocking:
+            return result[-1]['data']
+        else:
+            return
+
+    def get_line(self, url, query_id=None, blocking=True, timeout=0, callback=None):
+        """
+        Request information about one mass transit line from Yandex API.
+        :param query_id: string, ID of the query to send to the server, all responses to this query will
+                         contain this exact ID.
+                         Default is None, in this case it will be randomly generated,
+                         You can get it from the callback function by using data['id']
+                         if your callback function is like this: callback_fun(data)
+        :param url: Yandex Maps URL of the stop.
+        :param blocking: boolean, default is True, will block until the final response will be received.
+                      Note: this may take a while, several seconds and more.
+        :param timeout: integer, default is off, will raise a socket.timeout exception is no data is received
+                      during this period.
+                      Mind the server delay between processing queries, this value definitely should be bigger!
+                      If set to 0 - will wait indefinitely.
+        :param callback: Callback function to call when a new JSON is received.
+                         Used if block is set to False.
+        :return: for blocking mode: dictionary containing information about requested stop. Use
+                 json.dumps() function to get original Yandex API JSON.
+                 for non-blocking mode: empty string
+        """
+        result = self._execute_get_query('getLine', url, query_id, blocking, timeout, callback)
         if blocking:
             return result[-1]['data']
         else:
