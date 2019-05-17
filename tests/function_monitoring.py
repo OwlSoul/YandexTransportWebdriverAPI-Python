@@ -259,24 +259,24 @@ def test_45():
 
 # ------                                           getLine                                                     ------ #
 def test_50():
-    assert perform_test(dummy_test('getLine', 10)) == RESULT_DUMMY
+    assert perform_test(dummy_test('getLine', 50)) == RESULT_DUMMY
 
 def test_51():
-    assert perform_test(dummy_test('getLine', 11)) == RESULT_DUMMY
+    assert perform_test(dummy_test('getLine', 51)) == RESULT_DUMMY
 
 def test_52():
-    assert perform_test(_get_info(proxy.get_line, 'getLine', 12, url3['url'])) == RESULT_OK
+    assert perform_test(_get_info(proxy.get_line, 'getLine', 52, url3['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_53():
-    assert perform_test(_get_info(proxy.get_line, 'getLine', 13, url4['url'])) == RESULT_OK
+    assert perform_test(_get_info(proxy.get_line, 'getLine', 53, url4['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_54():
-    assert perform_test(_get_info(proxy.get_line, 'getLine', 14, url5['url'])) == RESULT_OK
+    assert perform_test(_get_info(proxy.get_line, 'getLine', 54, url5['url'])) == RESULT_OK
     sleep_random_time()
 
 def test_55():
-    assert perform_test(_get_info(proxy.get_line, 'getLine', 15, url6['url'])) == RESULT_OK
+    assert perform_test(_get_info(proxy.get_line, 'getLine', 55, url6['url'])) == RESULT_OK
     sleep_random_time()
 

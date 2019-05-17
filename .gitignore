@@ -5,7 +5,8 @@ tests_results.xml
 tests_results_continuous.xml
 dist
 test-data.json
-tests/testdata/output/*
+tests/testdata/output/*.json
+tests/testdata/output/*.json.*
 ytapi-wd-python.log
 results
 debug
