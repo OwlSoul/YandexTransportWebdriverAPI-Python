@@ -55,10 +55,11 @@ ADD yandex_transport_webdriver_api/* /home/transport_api/yandex_transport_webdri
 
 # Copying tests
 ADD tests/* /home/transport_api/tests/
-ADD tests/testdata/* /home/transport_api/testdata/
+ADD tests/testdata/* /home/transport_api/tests/testdata/
 ADD execute_tests.sh /home/transport_api
 ADD continuous_tests.sh /home/transport_api
 ADD function_monitoring.sh /home/transport_api
+RUN mkdir -p /home/transport_api/tests/testdata/output
 
 RUN chown -R transport_api:transport_api /home/transport_api
 WORKDIR /home/transport_api
