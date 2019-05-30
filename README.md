@@ -29,7 +29,7 @@ A "sort of API" to access Yandex Transport/Masstransit data, designed to work in
 ![Success](http://owlsoul.biz.tm/YandexTransportProxy/indicators/legend/dummy.png) - тест неприменим к данному URL \
 ![Success](http://owlsoul.biz.tm/YandexTransportProxy/indicators/legend/failed.png) - тест не пройден
 
-URL каждого теста можно узнать нажав на его номер в таблице.
+URL каждого теста можно узнать нажав на его номер в таблице. Таблица обновляется автоматически по результатам автоматизированного тестирования.
 
 ## Предназначение проекта
 
