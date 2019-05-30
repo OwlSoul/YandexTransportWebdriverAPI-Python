@@ -59,19 +59,19 @@ routes_urls = {"Москва/Автобус 105": "https://yandex.ru/maps/213/mo
                "Москва/Автобус 12": "https://yandex.ru/maps/213/moscow/?ll=37.546941%2C55.755232&masstransit%5BlineId%5D=213_12_bus_mosgortrans&masstransit%5BstopId%5D=stop__9649559&masstransit%5BthreadId%5D=213A_12_bus_mosgortrans&mode=stop&z=15",
                "Москва/Троллейбус 54": "https://yandex.ru/maps/213/moscow/?ll=37.587580%2C55.770117&masstransit%5BlineId%5D=213_54_trolleybus_mosgortrans&masstransit%5BstopId%5D=stop__9648355&masstransit%5BthreadId%5D=2036927249&mode=stop&z=17",
                "Москва/Автобус Н1": "https://yandex.ru/maps/213/moscow/?ll=37.634151%2C55.754175&masstransit%5BlineId%5D=N1_bus_default&masstransit%5BstopId%5D=stop__10187976&masstransit%5BthreadId%5D=2036926069&mode=stop&z=19",
-               "Петропавловск-Камчатский/Автобус 1": "https://yandex.ru/maps/78/petropavlovsk/?ll=158.650965%2C53.015840&masstransit%5BlineID%5D=1704841626&masstransit%5BstopId%5D=1543338149&masstransit%5BthreadId%5D=2163257102&mode=stop&z=17",
-               "Магадан/Автобус 1": "https://yandex.ru/maps/79/magadan/?ll=150.800171%2C59.560040&masstransit%5BlineID%5D=1704917872&masstransit%5BstopId%5D=1941449091&masstransit%5BthreadId%5D=1952775971&mode=stop&z=16",
-               "Владивосток/Маршрутка 24": "https://yandex.ru/maps/75/vladivostok/?ll=131.886671%2C43.115497&masstransit%5BlineID%5D=2468209792&masstransit%5BstopId%5D=stop__9980150&masstransit%5BthreadId%5D=2468209966&mode=stop&z=17",
-               "Якутск/Автобус 104": "https://yandex.ru/maps/74/yakutsk/?ll=129.728396%2C62.035988&masstransit%5BlineID%5D=1704844454&masstransit%5BstopId%5D=2040377980&masstransit%5BthreadId%5D=3442738945&mode=stop&z=16",
-               "Иркутск/Трамвай 4А": "https://yandex.ru/maps/63/irkutsk/?ll=104.259650%2C52.282821&masstransit%5BlineID%5D=1962955244&masstransit%5BstopId%5D=stop__9795272&masstransit%5BthreadId%5D=1962955369&mode=stop&z=18",
-               "Красноярск/Маршрутка 130": "https://yandex.ru/maps/62/krasnoyarsk/?ll=92.832626%2C56.006039&masstransit%5BlineID%5D=2611970500&masstransit%5BstopId%5D=stop__9901229&masstransit%5BthreadId%5D=2611970606&mode=stop&z=17",
-               "Омск/Троллейбус 12": "https://yandex.ru/maps/66/omsk/?ll=73.386035%2C54.939776&masstransit%5BlineID%5D=2012848234&masstransit%5BstopId%5D=stop__9727412&masstransit%5BthreadId%5D=2012848632&mode=stop&z=17",
-               "Екатеринбург/Трамвай 5": "https://yandex.ru/maps/54/yekaterinburg/?ll=60.611944%2C56.863058&masstransit%5BlineID%5D=2107048890&masstransit%5BstopId%5D=stop__9810370&masstransit%5BthreadId%5D=2107049173&mode=stop&z=18",
-               "Самара/Трамвай 5": "https://yandex.ru/maps/51/samara/?ll=50.102397%2C53.189701&masstransit%5BlineID%5D=2193179444&masstransit%5BstopId%5D=stop__10097748&masstransit%5BthreadId%5D=2193179903&mode=stop&z=17",
-               "Санкт-Петербург/Троллейбус 22": "https://yandex.ru/maps/2/saint-petersburg/?ll=30.326364%2C59.935241&masstransit%5BlineID%5D=22_trolleybus_discus&masstransit%5BstopId%5D=stop__10075220&masstransit%5BthreadId%5D=22B_trolleybus_discus&mode=stop&z=18",
-               "Калининград/Автобус 593": "https://yandex.ru/maps/22/kaliningrad/?ll=20.509223%2C54.712040&masstransit%5BlineID%5D=3181656187&masstransit%5BstopId%5D=3313917805&masstransit%5BthreadId%5D=3181656277&mode=stop&z=18",
-               "Москва/Маршрутка 937к": "https://yandex.ru/maps/213/moscow/?ll=37.465495%2C55.878790&masstransit%5BlineID%5D=937_minibus_default&masstransit%5BstopId%5D=stop__9680781&masstransit%5BthreadId%5D=937A_minibus_default&mode=stop&z=13",
-               "Москва/Трамвай А": "https://yandex.ru/maps/213/moscow/?ll=37.639842%2C55.764464&masstransit%5BlineID%5D=213_A_tramway_mosgortrans&masstransit%5BstopId%5D=stop__9646383&masstransit%5BthreadId%5D=2036927519&mode=stop&z=18"
+               "Петропавловск-Камчатский/Автобус 1": "https://yandex.ru/maps/78/petropavlovsk/?ll=158.650258%2C53.016359&masstransit%5BlineId%5D=1704841626&masstransit%5BthreadId%5D=2163257102&mode=stop&z=17",
+               "Магадан/Автобус 1": "https://yandex.ru/maps/79/magadan/?ll=150.800171%2C59.560040&masstransit%5BlineId%5D=1704917872&masstransit%5BthreadId%5D=1952775971&mode=stop&z=16",
+               "Владивосток/Маршрутка 24": "https://yandex.ru/maps/75/vladivostok/?ll=131.886671%2C43.115497&masstransit%5BlineId%5D=2468209792&masstransit%5BthreadId%5D=2468209966&mode=stop&z=17",
+               "Якутск/Автобус 104": "https://yandex.ru/maps/74/yakutsk/?ll=129.723504%2C62.037152&masstransit%5BlineId%5D=1704844454&masstransit%5BthreadId%5D=3442738945&mode=stop&z=16",
+               "Иркутск/Трамвай 4А": "https://yandex.ru/maps/63/irkutsk/?ll=104.259354%2C52.282396&masstransit%5BlineId%5D=1962955244&masstransit%5BthreadId%5D=1962955369&mode=stop&z=18",
+               "Красноярск/Маршрутка 130": "https://yandex.ru/maps/62/krasnoyarsk/?ll=92.831247%2C56.005319&masstransit%5BlineId%5D=2611970500&masstransit%5BthreadId%5D=2611970606&mode=stop&z=17",
+               "Омск/Троллейбус 12": "https://yandex.ru/maps/66/omsk/?ll=73.386035%2C54.939776&masstransit%5BlineId%5D=2012848234&masstransit%5BthreadId%5D=2012848632&mode=stop&z=17",
+               "Екатеринбург/Трамвай 5": "https://yandex.ru/maps/54/yekaterinburg/?ll=60.614978%2C56.863073&masstransit%5BlineId%5D=2107048890&masstransit%5BthreadId%5D=2107049173&mode=stop&z=16",
+               "Самара/Трамвай 5": "https://yandex.ru/maps/51/samara/?ll=50.099858%2C53.188705&masstransit%5BlineId%5D=2193179444&masstransit%5BthreadId%5D=2193179903&mode=stop&z=17",
+               "Санкт-Петербург/Троллейбус 22": "https://yandex.ru/maps/2/saint-petersburg/?ll=30.324825%2C59.935390&masstransit%5BlineId%5D=22_trolleybus_discus&masstransit%5BthreadId%5D=22B_trolleybus_discus&mode=stop&z=18",
+               "Калининград/Автобус 593": "https://yandex.ru/maps/22/kaliningrad/?ll=20.508255%2C54.712590&masstransit%5BlineId%5D=3181656187&masstransit%5BthreadId%5D=3181656277&mode=stop&z=18",
+               "Москва/Маршрутка 937к": "https://yandex.ru/maps/213/moscow/?ll=37.465495%2C55.878790&masstransit%5BlineId%5D=937_minibus_default&masstransit%5BthreadId%5D=937A_minibus_default&mode=stop&z=13",
+               "Москва/Трамвай А": "https://yandex.ru/maps/213/moscow/?ll=37.638675%2C55.764634&masstransit%5BlineId%5D=213_A_tramway_mosgortrans&masstransit%5BthreadId%5D=2036927519&mode=stop&z=18"
               }
 
 # Accumulated results. Good idea is to actually SAVE accumulated data results.
@@ -290,6 +290,7 @@ def test_encountered_methods():
     print("Counting methods:")
     result = {'getStopInfo': 0,
               'getRouteInfo': 0,
+              'getLine': 0,
               'getVehiclesInfo': 0,
               'getVehiclesInfoWithRegion': 0,
               'getLayerRegions': 0,
@@ -303,7 +304,7 @@ def test_encountered_methods():
     assert result['getStopInfo'] > 0
     assert result['getVehiclesInfo'] > 0
     assert result['getLayerRegions'] > 0
-    assert result['getRouteInfo'] > 0
+    assert result['getLine'] > 0
     assert result['getVehiclesInfoWithRegion'] > 0
     assert result['getAllInfo (failed)'] == 0
 
