@@ -12,3 +12,6 @@ results
 debug
 plots
 *.csv
+
+# Output data from examples
+examples/data.json
